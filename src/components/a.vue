@@ -160,10 +160,6 @@ export default {
   },
   beforeMount: function () {
     // console.log('挂载到页面前调用')
-    this.$ajax.get('/webapi/api/v1/jointduty/s-sysdate').then(result => {
-      console.log(result.data)
-    }
-    ).catch(result => console.log(result))
   },
   mounted: function () {
     // console.log('挂载到页面完成调用')
