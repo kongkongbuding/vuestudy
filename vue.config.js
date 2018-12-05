@@ -10,6 +10,7 @@ module.exports = {
       .resolve
       .alias
       .set('public', path.join(__dirname, 'public'))
+      .set('-', path.join(__dirname, 'assets'))
     config
       .entry('index')
         .add('babel-polyfill')

@@ -25,7 +25,9 @@ export default new Router({
           }
         }
       ],
-      // beforeEnter: (to, from, next) => { },
+      beforeEnter: (to, from, next) => {
+        to && from && next()
+      },
       meta: {
         keepAlive: false,
         requiresAuth: true

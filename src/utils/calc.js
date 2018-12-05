@@ -151,45 +151,6 @@ const PBezier = (arr, l, t) => {
   return [px, py]
 }
 
-// 燕尾
-const coattail = (arr, step) => {
-  let points = [{ x: arr[0].x, y: arr[0].y }],
-    l = arr.length,
-    p0 = [arr[0].x, arr[0].y],
-    num = Math.ceil(1 / step + 1) * 2,
-    ci = 1,
-    p
-
-  if (l < 2) return arr
-  for (let i = step; i < 1; i += step, ci++) {
-    p = PBezier(arr, l, i)
-    let r = 12 - i * 9,
-      radians = Math.atan2(p[1] - p0[1], p[0] - p0[0]) - Math.PI / 2,
-      offsetX = r * Math.cos(radians),
-      offsetY = r * Math.sin(radians)
-    points[ci] = { x: p[0] + offsetX, y: p[1] + offsetY }
-    points[num - ci] = { x: p[0] - offsetX, y: p[1] - offsetY }
-    p0 = p
-  }
-
-  p = [arr[l - 1].x, arr[l - 1].y]
-  let r = 24,
-    radians = Math.atan2(p[1] - p0[1], p[0] - p0[0])
-  p = { x: p0[0] + 10 * Math.cos(radians), y: p0[1] + 10 * Math.sin(radians) }
-  points[ci++] = {
-    x: p.x + r * Math.cos(Math.PI * 1.25 + radians),
-    y: p.y + r * Math.sin(Math.PI * 1.25 + radians)
-  }
-  points[ci++] = p
-  points[ci] = {
-    x: p.x + r * Math.cos(Math.PI * 0.75 + radians),
-    y: p.y + r * Math.sin(Math.PI * 0.75 + radians)
-  }
-
-  points.push({ x: arr[0].x, y: arr[0].y })
-  return points
-}
-
 // 获取最大差值
 const getMaxProfit = v => {
   if (v.length < 2) return 0

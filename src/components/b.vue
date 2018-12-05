@@ -1,7 +1,9 @@
 <template>
   <div class="user">
     <div>{{time}}</div>
-    <div>{{tm}}</div>
+    <div>
+      {{tm}}
+    </div>
   </div>
 </template>
 

@@ -10,14 +10,22 @@
       <span v-else>a 为偶数</span>|
       <span
         v-for="(v, i) in f"
-        :key="i"
-      >{{v.a}}</span>|
+        :key="i + 'f'"
+      >{{v.a}}:{{i}}、</span>|
+      <span
+        v-for="(v, i) in ff"
+        :key="i + 'ff'"
+      >{{v}}:{{i}}、</span>|
+      <span
+        v-for="(v, i) in fff"
+        :key="i + 'fff'"
+      >{{v.a}}:{{i}}、</span>|
       <span v-pre>跳过 {{a}}</span>|
       <span
         v-bind:todo="g"
-        :todo2="g"
+        :style="{fontSize: '12px'}"
       >dom 属性绑定{{g}}</span>|
-      <span>inject 注入 {{foo}}</span>|
+      <span style="font-size: 12px">inject 注入 {{foo}}</span>|
     </div>
     <router-link :to="{ path: '/main/test/test1'}">路由跳转</router-link>
     <div>stroe: {{s.index}} stroe.b:{{s.b.d}}</div>
@@ -84,6 +92,8 @@ export default {
       d: 'v-text',
       e: '<span style = "color: red">2</span>',
       f: new Array(10).fill({ a: 1 }),
+      ff: { a: 1, b: 2, c: 3, d: 4 },
+      fff: k.randomString(10),
       g: 'todo'
     }
   },
@@ -196,7 +206,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;

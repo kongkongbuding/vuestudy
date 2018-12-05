@@ -196,7 +196,8 @@ const latlngToString = v => {
 }
 
 // 新空间
-const newSpace = d => {
+const newSpace = (d, f) => {
+  if (f !== void 0) return JSON.parse(JSON.stringify(d))
   if (isArray(d)) {
     if (d.length == 0 || (d.length > 0 && !isArray(d[0]) && !isObject(d[0])))
       return Object.assign([], d, [])
