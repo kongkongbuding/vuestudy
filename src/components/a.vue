@@ -1,6 +1,6 @@
 <template>
   <div class="user">
-    <div>路由的id:{{ $route.params.id }}</div>
+    <div>路由的id:{{ $route.params.id | first}}</div>
     <div>
       <span>绑定指令</span>|
       <span v-once>我只构建一次</span>|
