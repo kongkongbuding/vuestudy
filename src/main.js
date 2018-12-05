@@ -11,7 +11,7 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://192.16
 Vue.prototype.$ajax = axios
 
 Vue.config.productionTip = false
-// window.vue = Vue
+// window.vue = Vue 
 
 Vue.filter('first', function (v) {
   return v + 1
