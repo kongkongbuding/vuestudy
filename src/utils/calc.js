@@ -175,6 +175,5 @@ export default {
   C,
   BEZ,
   PBezier,
-  coattail,
   getMaxProfit
 }
