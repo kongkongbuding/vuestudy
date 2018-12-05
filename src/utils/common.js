@@ -195,7 +195,7 @@ const latlngToString = v => {
   return f1 + '°' + f2 + "'" + f3 + '"'
 }
 
-// 新空间
+// 深层拷贝
 const newSpace = (d, f) => {
   if (f !== void 0) return JSON.parse(JSON.stringify(d))
   if (isArray(d)) {
