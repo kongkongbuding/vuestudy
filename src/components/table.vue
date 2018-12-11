@@ -1,6 +1,7 @@
 <template>
   <div :style="{height: h + 'px', width: w + 'px', background: '#cecece', margin: '0 auto'}">
     <easy-table
+      :int="int"
       theme="default"
       :d="d"
       :config="config"
@@ -73,7 +74,8 @@ export default {
       },
       t: 0,
       w: 800,
-      h: 500
+      h: 500,
+      int: 1
     }
   },
   created () {
@@ -81,14 +83,15 @@ export default {
   mounted () {
     setTimeout(() => {
       this.w = 600
+      this.int++
     }, 2000)
     setTimeout(() => {
       this.h = 600
+      this.int++
     }, 4000)
   },
   methods: {
     tableClick: function (v) {
-      console.log(v)
       this.t = '站名：' + v.d
     }
   }

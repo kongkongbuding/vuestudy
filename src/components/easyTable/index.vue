@@ -41,7 +41,8 @@ export default {
     },
     d: Array,
     config: Object,
-    clickEvent: Function
+    clickEvent: Function,
+    int: Number
   },
   data () {
     return {
@@ -71,8 +72,8 @@ export default {
   },
   mounted: function () {
     this.$nextTick(function () {
-      let w = this.$refs.box.offsetWidth
-      this.boxWidth = w + 'px'
+      this.setSize()
+      this.initEvent()
     })
   },
   updated: function () {
@@ -81,6 +82,15 @@ export default {
     })
   },
   methods: {
+    initEvent: function () {
+      window.onresize = () => {
+        this.setSize()
+      }
+    },
+    setSize: function () {
+      let w = this.$refs.box.offsetWidth
+      this.boxWidth = w + 'px'
+    },
     changeOrder: function (i) {
       let order = this.order, { col, s } = order
       if (col === i) {
@@ -187,7 +197,9 @@ export default {
     }
   },
   watch: {
-
+    int: function (v) {
+      this.setSize()
+    }
   }
 }
 </script>
