@@ -10,6 +10,13 @@ export default new Router({
       component: resolve => require(['@/components/a.vue'], resolve)
     },
     {
+      path: '/table',
+      component: res => require(['@/components/table.vue'], res),
+      props: {
+        theme: 'default'
+      }
+    },
+    {
       path: '/t/:id',
       component: resolve => require(['@/components/HelloWorld.vue'], resolve),
       props: {
