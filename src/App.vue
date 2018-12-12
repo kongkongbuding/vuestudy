@@ -1,14 +1,19 @@
 <template>
   <div id='app'>
     <keep-alive :max="10">
-      <router-view></router-view>
+      <router-view :key="key"></router-view>
     </keep-alive>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  computed: {
+    key: function () {
+      return this.$route.path
+    }
+  }
 }
 </script>
 

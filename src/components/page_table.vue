@@ -70,6 +70,7 @@ export default {
           }
         },
         autoScroll: true,
+        scrollBar: true,
         scrollSpeed: 20
       },
       t: 0,

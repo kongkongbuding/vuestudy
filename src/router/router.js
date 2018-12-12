@@ -10,11 +10,37 @@ export default new Router({
       component: resolve => require(['@/components/a.vue'], resolve)
     },
     {
-      path: '/table',
-      component: res => require(['@/components/table.vue'], res),
-      props: {
-        theme: 'default'
+      path: '/keepalive1',
+      component: res => {
+        require(['@/components/keepalive1.vue'], res)
+      },
+      meta: {
+        keepAlive: false
       }
+    },
+    {
+      path: '/keepalive2',
+      name: 'keepalive2',
+      component: res => require(['@/components/keepalive2.vue'], res),
+      meta: {
+        keepAlive: false
+      }
+    },
+    {
+      path: '/keepalive3',
+      name: 'keepalive3',
+      component: res => require(['@/components/keepalive2.vue'], res),
+      meta: {
+        keepAlive: false
+      }
+    },
+    {
+      path: '/table',
+      component: res => require(['@/components/page_table.vue'], res)
+    },
+    {
+      path: '/img',
+      component: res => require(['@/components/page_img.vue'], res)
     },
     {
       path: '/t/:id',

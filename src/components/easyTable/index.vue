@@ -14,18 +14,16 @@
       </table>
     </div>
     <div class="tableBody" :style="{height: 'calc(100% - ' + cof.titleH + 'px)'}" ref='out'>
-      <div class="tableBodyA" ref='wrap'>
-        <div class="tableBodyD" :style="{width: boxWidth}">
-          <table :border="cof.tableBorder ? true : false" v-for="(p, m) in copy" :key="m" ref='inner'>
-            <tr v-for="(v, i) in delData" :key="'tr' + i" :style="v.__tr__" @click="trClick(v)" :class="!!clickEvent ? 'hoverLine' : ''">
-              <td :class="'align' + c.align" v-for="(c, n) in cof.col" :key="n" :width="n == cof.col.length - 1 ? '' : c.width * 100 + '%'" :style="v[ c.key + '__td__']">
-                <img v-if="c.type === 'img'" :src="v[c.key]" />
-                <i class="tdIcon" v-else-if="c.type === 'icon'" :style="{backgroundColor: v[c.key]}"/>
-                <span v-else v-text="c.type === 'order' ? i + 1 : v[c.key]"/>
-              </td>
-            </tr>
-          </table>
-        </div>
+      <div class="tableBodyA" ref='wrap' :style="{width: cof.scrollBar ? '100%' : 'calc(100% + 200px)'}">
+        <table :border="cof.tableBorder ? true : false" v-for="(p, m) in copy" :key="m" ref='inner' :style="{width: boxWidth}">
+          <tr v-for="(v, i) in delData" :key="'tr' + i" :style="v.__tr__" @click="trClick(v)" :class="!!clickEvent ? 'hoverLine' : ''">
+            <td :class="'align' + c.align" v-for="(c, n) in cof.col" :key="n" :width="n == cof.col.length - 1 ? '' : c.width * 100 + '%'" :style="v[ c.key + '__td__']">
+              <img v-if="c.type === 'img'" :src="v[c.key]" />
+              <i class="tdIcon" v-else-if="c.type === 'icon'" :style="{backgroundColor: v[c.key]}"/>
+              <span v-else v-text="c.type === 'order' ? i + 1 : v[c.key]"/>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
@@ -42,11 +40,13 @@ export default {
     d: Array,
     config: Object,
     clickEvent: Function,
-    int: Number
+    int: {
+      type: Number,
+      default: -1
+    }
   },
   data () {
     return {
-      s: this.$store.state,
       boxWidth: '100%',
       copy: [1],
       order: {
@@ -66,6 +66,7 @@ export default {
         tableBorder: true,
         special: false,
         autoScroll: false,
+        scrollBar: false,
         scrollSpeed: 20
       }
     }
@@ -108,7 +109,7 @@ export default {
       let { out, inner, wrap } = this.$refs
       if (!out || !inner[0] || !wrap) return false
       let oh = out.offsetHeight, ih = inner[0].offsetHeight, opt = this.opt
-      if (oh < ih && !opt.hover && this._props.config.autoScroll) {
+      if (oh < ih && !opt.hover && this.$props.config.autoScroll) {
         if (this.copy.length === 1) {
           this.copy.push(2)
         }
@@ -155,7 +156,7 @@ export default {
       return 'easyTable ' + this.theme
     },
     cof: function () {
-      let cof = Object.assign({}, this.defaultConfig, this._props.config)
+      let cof = Object.assign({}, this.defaultConfig, this.$props.config)
       cof.col.map((v, i) => {
         if (typeof v.name === 'string') {
           cof.col[i].name = v.name.split('&')
@@ -164,7 +165,7 @@ export default {
       return cof
     },
     delData: function () {
-      let s = this._props.config.special, order = this.order
+      let s = this.$props.config.special, order = this.order
       if (s) {
         this.d.map((v, i) => {
           for (let p in s) {
@@ -184,7 +185,7 @@ export default {
         })
       }
       if (order.s === 0 || order.col === -1) return this.d
-      let key = this._props.config.col[order.col].key
+      let key = this.$props.config.col[order.col].key
       if (!key) return this.d
       let ord = order.s === 1 ? 'asc' : 'desc'
       let d = this.sort(this.d, ord, key)
