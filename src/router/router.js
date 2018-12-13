@@ -6,6 +6,20 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/',
+      component: resolve => require(['@/views/tz/notice-fnd.vue'], resolve)
+    },
+    {
+      path: '/test',
+      component: resolve =>
+        require(['@/components/PhotoPreview/PhotoPreview.vue'], resolve)
+    },
+    {
+      path: '/test1',
+      component: resolve =>
+        require(['@/views/test.vue'], resolve)
+    },
+    {
       path: '/f',
       component: resolve => require(['@/components/a.vue'], resolve)
     },

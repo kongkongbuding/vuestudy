@@ -1,0 +1,26 @@
+* { margin: 0; padding: 0;}
+div {box-sizing:border-box;  -moz-box-sizing:border-box;  -webkit-box-sizing:border-box;}
+.tz_content_wrapper {box-sizing:border-box;  -moz-box-sizing:border-box;  -webkit-box-sizing:border-box;font-family: '微软雅黑';margin:0; padding:0; background-color: #fff;overflow: hidden;}
+.tz_content_wrapper .top_top { overflow: hidden; height: 36px; line-height: 36px; text-align: center; font-size: 18px; color: #fff; background-color: #186ae6; position: relative;}
+.tz_content_wrapper .top_top i { position: absolute; height: 22px; width: 22px; background: url('../assets/tz/left.png') no-repeat; top: 7px; left: 15px;}
+.tz_content_wrapper .top_bar { height: 72px; text-align: center; font-size: 18px; color: #fff; background-color: #ebebeb; position: relative; padding-top: 14px;}
+.tz_content_wrapper .search_wrap { height: 40px; line-height: 40px; width: calc(100% - 32px); margin-left: 16px; border: 1px solid #cecece; border-radius: 5px; overflow: hidden; background-color: #fff; }
+.tz_content_wrapper .search_wrap input { height: 40px; line-height: 40px; outline: none; margin: 0; padding: 0; width: calc(100% - 60px); box-sizing:border-box;  -moz-box-sizing:border-box;  -webkit-box-sizing:border-box; border: 0px; float: left; color: #666; background: url('../assets/tz/搜索.png') no-repeat; background-position: 9px 9px; font-size: 16px; padding-left: 35px;}
+.tz_content_wrapper .search_wrap span {  float: left; height: 40px; line-height: 40px; text-align: center; font-size: 16px; color: #fff; background-color: #3191f7; width: 60px;}
+.tz_content_wrapper .pdfContainer { position:absolute;top:0;left:0;background-color:#fff}
+.tz_content_wrapper .closeBtn { height: 20px; width :20px; position: absolute; top: 8px; right: 34px; background: url('../assets/tz/close.png') no-repeat; background-size: 10px 10px; background-position: 5px 5px;}
+
+.tz_content_wrapper .file_title { padding: 0 15px; margin: 20px 0px; font-size: 24px; font-weight: bold; color: #333; text-align: center;}
+.tz_content_wrapper .file_time { padding: 0 15px; margin: 0 0 6px 0; font-size: 14px; font-weight: 400; color: #333; text-align: right;}
+.tz_content_wrapper .file_content { padding: 15px; margin: 0; border-top: 1px solid #cecece; font-size: 16px; font-weight: 400; color: #333; text-indent: 2em; font-size: 14px; line-height: 24px;}
+
+.tz_content_wrapper .file_download { margin-top: 30px; margin-left: 20px;}
+.tz_content_wrapper .file_download div { height: 30px; line-height: 30px; color: #1296db;}
+.tz_content_wrapper .file_download div span { text-decoration: underline;}
+.tz_content_wrapper .file_download i { display: inline-block; height: 20px; width: 20px; background: url('../assets/tz/附件.png') no-repeat; margin-right: 10px; position: relative; top: 5px;}
+
+.tz_content_wrapper ._closeBtn { position: fixed; top: 0; right: 0; background: url(../assets/tz/关闭.png) no-repeat; height: 30px; width: 31px; opacity: 0.5;}
+
+.notice_wrapper .pdfContainer { position:absolute;top:0;left:0;background-color:#fff;z-index: 9999999; width: 100%; height: 100%;}
+.notice_wrapper .pdfContainer_ios { position:absolute;top:0;left:0;background-color:#fff;z-index: 9999999; width: 100%; height: calc(100% - 48px);}
+.tz_content_wrapper .closeBtn { height: 20px; width :20px; position: absolute; top: 6px; right: 40px; background: url(../assets/tz/close.png) no-repeat; background-size: 10px 10px; background-position: 5px 5px; z-index: 9999;}
