@@ -28,6 +28,7 @@ PDFJS.workerSrc = '../build/pdf.worker.js';
 // PDFJS.cMapUrl = '../build/dist/cmaps/';
 // PDFJS.cMapPacked = true;
 
+// var DEFAULT_URL = 'http://172.16.0.202:3000/static/nodejs.pdf'
 var DEFAULT_URL = './nodejs.pdf';
 // var DEFAULT_URL = window.location.search.slice(6);
 var DEFAULT_SCALE_DELTA = 1.1;

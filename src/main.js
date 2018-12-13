@@ -6,10 +6,10 @@ import App from './App.vue'
 import router from './router/router'
 import store from './store/store'
 import axios from 'axios'
-import VuePreview from 'vue-preview'
-import VueTouch from 'vue-touch'
+/* import VuePreview from 'vue-preview'
+import VueTouch from 'vue-touch' */
 
-VueTouch.registerCustomEvent('doubletap', {
+/* VueTouch.registerCustomEvent('doubletap', {
   type: 'tap',
   taps: 2
 })
@@ -23,7 +23,7 @@ Vue.use(VuePreview, {
   shareEl: false,
   tapToClose: true,
   tapToToggleControls: false
-})
+}) */
 // axios是一个基于promise的HTTP库，
 // baseurl 将自动加在URL前面，除非URL是一个绝对URL
 axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://192.168.118.226:50053' : ''
