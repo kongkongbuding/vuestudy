@@ -1,12 +1,31 @@
 <template>
   <div :class="cName">
-    112
+    <div class="imgViewBox">
+      <ImsShow
+        :img="img"
+      />
+    </div>
+    <div class="playViewBox">
+      <play-bar
+        :int="playInt"
+        theme="default"
+        :d="data"
+        :config="playConfig"
+        :change="imgChange"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import ImsShow from './imgShow.vue'
+import PlayBar from './playBar.vue'
 export default {
-  name: 'easyTable',
+  name: 'imgView',
+  components: {
+    ImsShow,
+    PlayBar
+  },
   props: {
     theme: {
       type: String,
@@ -21,7 +40,12 @@ export default {
   },
   data () {
     return {
-      defaultConfig: {
+      data: [],
+      cof: {},
+      img: '',
+      playInt: -1,
+      playConfig: {
+
       }
     }
   },
@@ -29,11 +53,6 @@ export default {
     this.$nextTick(function () {
       this.setSize()
       this.initEvent()
-    })
-  },
-  updated: function () {
-    this.$nextTick(function () {
-      this.autoScroll()
     })
   },
   methods: {
@@ -44,6 +63,13 @@ export default {
     },
     setSize: function () {
 
+    },
+    imgChange: function (i) {
+      let v = this.data[i]
+      if (!v) return
+      let url = v.url
+      if (i === 1) url += '12'
+      this.img = url
     }
   },
   computed: {
@@ -55,6 +81,11 @@ export default {
   },
   watch: {
     int: function (v) {
+      let cof = Object.assign({}, this.cof, this.$props.config)
+      this.cof = cof
+      this.playConfig = this.cof.playConfig || {}
+      this.data = this.d
+      this.playInt++
       this.setSize()
     }
   }
@@ -62,5 +93,5 @@ export default {
 </script>
 
 <style type="text/less" lang="less" scoped>
-@import "./style.less";
+@import "./index.less";
 </style>
