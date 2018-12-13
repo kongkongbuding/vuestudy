@@ -1,21 +1,23 @@
 <template>
-  <canvas
-    :class='cName'
-    ref='canvas'
-    @mousemove="move"
-    @click="click"
-  />
+  <div :class='cName'>
+    <canvas
+      ref='canvas'
+      @mousemove="move"
+      @click="click"
+    />
+    <div v-if="tipShow" class="tipBox">{{tipText}}</div>
+  </div>
 </template>
 
 <script>
 
 const PI = Math.PI
-const INTERVAL = 80
 const BLEFT = 120
 const BARLEFT = 5
 const BARRIGHT = 30
 const INDENT = 12
 const TICKHALF = 12
+const MINTICK = 4
 
 export default {
   name: 'playBar',
@@ -40,13 +42,14 @@ export default {
         barColor: '#32608f',
         label: 'time', // time text
         tick: true,
-        speed: 1000
+        speed: 1000,
+        interval: 80
       },
       c: {
         i: 0,
         timer: null,
         tickIndex: 1,
-        tickInterval: INTERVAL,
+        tickInterval: 80,
         w: 2000,
         h: 100,
         rect: [0, 2000],
@@ -63,7 +66,9 @@ export default {
           { key: -1, size: 3.5, left: 17 },
           { key: -1, size: 3.5, left: 23 }
         ]
-      }
+      },
+      tipShow: false,
+      tipTimer: null
     }
   },
   mounted: function () {
@@ -88,6 +93,7 @@ export default {
       this.c.h = h
     },
     move: function (e) {
+      this.hideTip()
       let { btn, rect, h, w, tickInterval } = this.c
       let canvas = this.$refs.canvas
       if (!canvas) return
@@ -101,6 +107,7 @@ export default {
       if (!hit && x > rect[0] && x < rect[1] && Math.abs(y - h / 2) < 5) {
         let i = Math.min(Math.max(0, Math.round((x - (rect[0] + INDENT)) / tickInterval)), this.d.length - 1)
         hit = 'index_' + i
+        this.showTip()
       }
       if (this.c.hit === hit) return
       canvas.style.cursor = hit ? 'pointer' : 'default'
@@ -163,7 +170,7 @@ export default {
       let ctx = canvas.getContext('2d')
       let len = d.length < 2 ? 1 : d.length - 1
       let tickInterval = (w - BLEFT - BARLEFT - INDENT * 2 - BARRIGHT) / len
-      let tickIndex = tickInterval > INTERVAL ? 1 : Math.floor(INTERVAL / tickInterval)
+      let tickIndex = tickInterval > cof.interval ? 1 : Math.floor(cof.interval / tickInterval)
       this.c.tickInterval = tickInterval
       this.c.tickIndex = tickIndex
       let start = BLEFT + INDENT + BARLEFT
@@ -241,8 +248,11 @@ export default {
 
       // 绘制刻度
       if (cof.tick) {
+        let nl = -99
         d.map((v, i) => {
           let l = start + i * tickInterval
+          if (l - nl < MINTICK) return
+          nl = l
           ctx.strokeStyle = '#fff'
           ctx.lineWidth = 1
           ctx.beginPath()
@@ -276,11 +286,29 @@ export default {
       ctx.moveTo(left + size * 0.7, h / 2 - size * 1.5)
       ctx.lineTo(left + size * 0.7, h / 2 + size * 1.5)
       ctx.stroke()
+    },
+    showTip: function () {
+      clearInterval(this.tipTimer)
+      this.tipTimer = setInterval(() => {
+        this.tipShow = true
+      }, 1000)
+    },
+    hideTip: function () {
+      clearInterval(this.tipTimer)
+      this.tipShow = false
     }
   },
   computed: {
     cName: function () {
       return 'playBar ' + this.theme
+    },
+    tipText: function () {
+      let { d, c } = this, { hit } = c
+      if (!hit) return ''
+      let i = hit.split('_')[1] || 0
+      if (!d[i]) return ''
+      let text = d[i].tm
+      return text
     }
   },
   filters: {
@@ -302,9 +330,12 @@ export default {
 
 <style type="text/less" lang="less" scoped>
 .playBar {
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  margin: 0;
+  height: 100%; width: 100%; padding: 0; margin: 0; position: relative;
+  canvas {
+    height: 100%; width: 100%;
+  }
+  .tipBox {
+    position: absolute; z-index: 2;
+  }
 }
 </style>

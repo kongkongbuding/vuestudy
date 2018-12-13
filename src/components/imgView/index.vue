@@ -44,9 +44,7 @@ export default {
       cof: {},
       img: '',
       playInt: -1,
-      playConfig: {
-
-      }
+      playConfig: {}
     }
   },
   mounted: function () {
@@ -68,7 +66,6 @@ export default {
       let v = this.data[i]
       if (!v) return
       let url = v.url
-      if (i === 1) url += '12'
       this.img = url
     }
   },

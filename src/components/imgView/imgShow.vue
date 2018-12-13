@@ -2,11 +2,13 @@
   <div :class="cName" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup" @mousemove="mousemove" @dblclick="dblclick">
     <div class="basePoint" ref="basePoint"></div>
     <div class="transformBox" ref="box" :style="{transform: transform}"></div>
-    <!-- transform: translate(-476px, 0px) scale(1.3) -->
   </div>
 </template>
 
 <script>
+
+const SCALE = 1.5
+
 export default {
   name: 'imgShow',
   props: {
@@ -34,8 +36,16 @@ export default {
     }
   },
   mounted: function () {
+    this.$nextTick(function () {
+      this.initEvent()
+    })
   },
   methods: {
+    initEvent: function () {
+      window.onresize = () => {
+        this.initImg(this.img)
+      }
+    },
     clear: function () {
       this.p = [0, 0, 1]
       let box = this.$refs.box
@@ -85,19 +95,30 @@ export default {
       let { v, p } = this
       let bs = this.$refs.basePoint
       if (!bs) return
+
       let x = e.pageX - bs.offsetLeft
       let y = e.pageY - bs.offsetTop
       v.e = [x, y]
       if (!v.state) return
+
       let dx = x - v.a[0] + v.p[0]
       let dy = y - v.a[1] + v.p[1]
       this.p = [dx, dy, p[2]]
     },
     dblclick: function (e) {
-      console.log('click')
+      this.zoom(1)
     },
     mousewheel: function (e) {
-      console.log('wheel')
+      let delta = e.wheelDelta
+      this.zoom(delta)
+    },
+    zoom: function (key) {
+      let { v, p } = this, { e } = v
+      let delta = key > 0 ? SCALE : 1 / SCALE
+      let s = p[2] * delta
+      let a = (p[0] - e[0]) * delta + e[0]
+      let b = (p[1] - e[1]) * delta + e[1]
+      this.p = [a, b, s]
     }
   },
   computed: {
@@ -128,7 +149,7 @@ export default {
   height: 100%; width: 100%; overflow: hidden; background: #fff;
   .isSelect(none);
   .basePoint { position: fixed; height: 0; width: 0; }
-  .transformBox { height: 100%; width: 100%; text-align: center; transform-origin: '0px 0px'}
+  .transformBox { height: 100%; width: 100%; text-align: center; transform-origin: 0px 0px 0px;}
   img { .isSelect(none); }
 }
 </style>
