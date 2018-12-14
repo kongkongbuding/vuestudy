@@ -11,7 +11,9 @@
 
 <script>
 import ImgView from './imgView/index.vue'
+
 const radar = 'http://47.95.1.229:8069/webapi/api/v2/images/realtime-custom?category=radar/huanan&name=华南雷达拼图&time=[2018-12-11T04:59:24,2018-12-13T08:59:24]'
+
 export default {
   name: 'tableTest',
   components: {
@@ -50,5 +52,5 @@ export default {
 </script>
 
 <style type="text/less" lang="less" scoped>
-.ppap { height: 680px; width: 90%; border: 1px solid #999; margin: 0 auto;}
+.ppap { height: 80%; width: 90%; border: 1px solid #999; margin: 0 auto;}
 </style>

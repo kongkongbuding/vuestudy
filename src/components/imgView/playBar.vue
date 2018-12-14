@@ -74,6 +74,10 @@ export default {
       tipTimer: null
     }
   },
+  beforeMount: function () {
+    let cof = Object.assign({}, this.cof, this.$props.config)
+    this.cof = cof
+  },
   mounted: function () {
     this.$nextTick(function () {
       window.addEventListener('resize', this.initEvent)

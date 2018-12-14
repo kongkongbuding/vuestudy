@@ -62,13 +62,13 @@ export default {
         let iw = img.width, ih = img.height
         let w = iw, h = ih
         if (bw / bh >= iw / ih) {
-          h = bh
-          w = bh * iw / ih
+          h = Math.min(bh, ih)
+          w = h * iw / ih
         } else {
-          w = bw
-          h = bw * ih / iw
-          img.style.marginTop = (bh - h) / 2 + 'px'
+          w = Math.min(bw, iw)
+          h = w * ih / iw
         }
+        img.style.marginTop = (bh - h) / 2 + 'px'
         img.width = w
         img.height = h
         img.draggable = false

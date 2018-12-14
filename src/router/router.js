@@ -43,6 +43,10 @@ export default new Router({
       component: res => require(['@/components/page_img.vue'], res)
     },
     {
+      path: '/map',
+      component: res => require(['@/components/page_map.vue'], res)
+    },
+    {
       path: '/t/:id',
       component: resolve => require(['@/components/HelloWorld.vue'], resolve),
       props: {

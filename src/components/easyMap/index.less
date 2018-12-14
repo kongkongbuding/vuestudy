@@ -1,0 +1,24 @@
+/** 通用 */
+@borderColor: #405983;
+.isSelect(@st) { user-select:@st; -ms-user-select:@st; -moz-user-select:@st; -webkit-user-select:@st; }
+.pmNone { padding: 0; margin: 0; }
+.borderBox { box-sizing: border-box; -ms-box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; }
+
+/** 样式 */
+.easyMap {
+  font-family: Arial, Helvetica, sans-serif; height: 100%; width: 100%; overflow: hidden;
+  .borderBox;
+  .pmNone;
+  * { .pmNone }
+  div { .borderBox }
+  span { .isSelect(none);}
+  img[src=''] {display: none;}
+  .wrapBox {
+    position: relative;
+    .baseMap { height: 100%; width: 100%; }
+    .drawCanvas { height: 100%; width: 100%; position: absolute; top: 0; left: 0; z-index: 1;}
+    .mapPoint {
+      position: absolute; z-index: 2;
+    }
+  }
+}
