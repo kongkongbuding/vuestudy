@@ -1,8 +1,8 @@
 <template>
   <div id='app'>
-    <keep-alive :max="10">
+    <!-- <keep-alive :max="10"> -->
       <router-view :key="key"></router-view>
-    </keep-alive>
+    <!-- </keep-alive> -->
   </div>
 </template>
 

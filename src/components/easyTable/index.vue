@@ -74,7 +74,7 @@ export default {
   mounted: function () {
     this.$nextTick(function () {
       this.setSize()
-      this.initEvent()
+      window.addEventListener('resize', this.initEvent)
     })
   },
   updated: function () {
@@ -82,11 +82,12 @@ export default {
       this.autoScroll()
     })
   },
+  beforeDestroy: function () {
+    this.stopScroll()
+  },
   methods: {
     initEvent: function () {
-      window.onresize = () => {
-        this.setSize()
-      }
+      this.setSize()
     },
     setSize: function () {
       let w = this.$refs.box.offsetWidth

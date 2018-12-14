@@ -5,7 +5,9 @@
       @mousemove="move"
       @click="click"
     />
-    <div v-if="tipShow" class="tipBox">{{tipText}}</div>
+    <div v-if="tipShow" class="tipBox" :style="{left: c.e[0] + 'px', top: c.e[1] + 'px'}">
+      <div class="tipText">{{tipText}}</div>
+    </div>
   </div>
 </template>
 
@@ -53,6 +55,7 @@ export default {
         w: 2000,
         h: 100,
         rect: [0, 2000],
+        e: [0, 0],
         hit: false,
         btn: [
           { key: 'btn_pre', left: 20, r: 12 },
@@ -73,15 +76,16 @@ export default {
   },
   mounted: function () {
     this.$nextTick(function () {
-      this.initEvent()
+      window.addEventListener('resize', this.initEvent)
     })
+  },
+  beforeDestroy: function () {
+    clearInterval(this.c.timer)
   },
   methods: {
     initEvent: function () {
-      window.onresize = () => {
-        this.setSize()
-        this.draw()
-      }
+      this.setSize()
+      this.draw()
     },
     setSize: function () {
       let canvas = this.$refs.canvas, w = 2000, h = 100
@@ -93,13 +97,13 @@ export default {
       this.c.h = h
     },
     move: function (e) {
-      this.hideTip()
       let { btn, rect, h, w, tickInterval } = this.c
       let canvas = this.$refs.canvas
       if (!canvas) return
       let cr = canvas.getBoundingClientRect()
       let x = (e.clientX - cr.left) / cr.width * w
       let y = (e.clientY - cr.top) / cr.height * h
+      this.c.e = [x, y - 30]
       let hit = false
       btn.map(v => {
         if (Math.sqrt(Math.pow(x - v.left, 2) + Math.pow(y - h / 2, 2)) < v.r) hit = v.key
@@ -108,6 +112,8 @@ export default {
         let i = Math.min(Math.max(0, Math.round((x - (rect[0] + INDENT)) / tickInterval)), this.d.length - 1)
         hit = 'index_' + i
         this.showTip()
+      } else {
+        this.hideTip()
       }
       if (this.c.hit === hit) return
       canvas.style.cursor = hit ? 'pointer' : 'default'
@@ -291,7 +297,7 @@ export default {
       clearInterval(this.tipTimer)
       this.tipTimer = setInterval(() => {
         this.tipShow = true
-      }, 1000)
+      }, 800)
     },
     hideTip: function () {
       clearInterval(this.tipTimer)
@@ -336,6 +342,7 @@ export default {
   }
   .tipBox {
     position: absolute; z-index: 2;
+    .tipText { position: relative; left: -50%; padding: 2px 8px; background: rgba(0, 0, 0, .7); border: 1px solid #333; white-space: nowrap; color: #fff; font-size: 14px;}
   }
 }
 </style>

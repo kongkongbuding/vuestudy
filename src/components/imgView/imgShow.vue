@@ -37,14 +37,12 @@ export default {
   },
   mounted: function () {
     this.$nextTick(function () {
-      this.initEvent()
+      window.addEventListener('resize', this.initEvent)
     })
   },
   methods: {
     initEvent: function () {
-      window.onresize = () => {
-        this.initImg(this.img)
-      }
+      this.initImg(this.img)
     },
     clear: function () {
       this.p = [0, 0, 1]

@@ -1,5 +1,5 @@
 <template>
-  <div :style="{height: h + 'px', width: w + 'px', border: '1px solid #999', margin: '0 auto'}">
+  <div class="ppap">
     <img-view
       :int="int"
       theme="default"
@@ -19,8 +19,6 @@ export default {
   },
   data () {
     return {
-      w: 1200,
-      h: 680,
       int: 1,
       d: [],
       config: {
@@ -50,3 +48,7 @@ export default {
   }
 }
 </script>
+
+<style type="text/less" lang="less" scoped>
+.ppap { height: 680px; width: 90%; border: 1px solid #999; margin: 0 auto;}
+</style>

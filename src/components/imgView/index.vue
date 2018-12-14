@@ -48,20 +48,8 @@ export default {
     }
   },
   mounted: function () {
-    this.$nextTick(function () {
-      this.setSize()
-      this.initEvent()
-    })
   },
   methods: {
-    initEvent: function () {
-      window.onresize = () => {
-        this.setSize()
-      }
-    },
-    setSize: function () {
-
-    },
     imgChange: function (i) {
       let v = this.data[i]
       if (!v) return
@@ -83,7 +71,6 @@ export default {
       this.playConfig = this.cof.playConfig || {}
       this.data = this.d
       this.playInt++
-      this.setSize()
     }
   }
 }
