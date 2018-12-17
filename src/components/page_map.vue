@@ -48,16 +48,19 @@ export default {
           points.push({
             lat: v.lttd,
             lng: v.lgtd,
+            stnm: v.stnm,
+            stcd: v.stcd,
+            batch: v.batch,
             icon: normal,
             size: [10, 10],
             tooltip: {
-              permanent: true,
+              permanent: false,
               direction: 'top',
-              html: `<div>` +
-                `<div>stnm: ` + v.stnm + `</div>` +
-                `<div>stcd: ` + v.stcd + `</div>` +
-                `<div>batch: ` + v.batch + `</div>` +
-              `</div>`
+              data: [
+                { name: '', key: 'stnm', textAlign: 'center' },
+                { name: 'stcd:', key: 'stcd' },
+                { name: 'batch:', key: 'batch' }
+              ]
             }
           })
           try {
@@ -66,16 +69,19 @@ export default {
               latlng,
               color: 'rgba(255, 255, 255, .7)',
               hover: '#ffe845',
+              stnm: v.stnm,
+              stcd: v.stcd,
+              batch: v.batch,
               tooltip: {
                 lat: latlng[0][0].lat,
                 lng: latlng[0][0].lng,
                 permanent: false,
                 direction: 'top',
-                html: `<div>` +
-                  `<div>stnm: ` + v.stnm + `</div>` +
-                  `<div>stcd: ` + v.stcd + `</div>` +
-                  `<div>batch: ` + v.batch + `</div>` +
-                `</div>`
+                data: [
+                  { name: '', key: 'stnm', textAlign: 'center' },
+                  { name: 'stcd:', key: 'stcd' },
+                  { name: 'batch:', key: 'batch' }
+                ]
               }
             }
             areas.push(area)

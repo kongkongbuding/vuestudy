@@ -6,14 +6,15 @@
       <div class="mapPoint" v-for="(v, i) in data" :key="'point' + i" :style="{left: v.__left__ + 'px', top: v.__top__ + 'px'}">
         <img draggable="false" @click="hitClick" @mouseover="hitPoint(v, i)" @mouseout="blurPoint" :src="v.icon" :style="{marginLeft: v.size[0] / -2 + 'px', marginTop: v.size[1] / -2 + 'px'}" />
       </div>
-      <div class="tooltipBox" v-for="(v, i) in data" :key="'tooltip_p_' + i" :style="{left: v.__left__ + 'px', top: v.__top__ + 'px'}">
-        <div v-if="v.tooltip && (v.tooltip.permanent || (mouse.i == i && mouse.hit == 'points'))">
-          <div v-html="v.tooltip.html"></div>
-        </div>
-      </div>
-      <div class="tooltipBox" v-for="(v, i) in d.areas" :key="'tooltip_a_' + i" :style="{left: v.tooltip.__left__ + 'px', top: v.tooltip.__top__ + 'px'}">
-        <div v-if="v.tooltip && (v.tooltip.permanent || (mouse.i == i && mouse.hit == 'areas'))">
-          <div v-html="v.tooltip.html"></div>
+      <div v-for="(c, j) in d" :key="'d_' + j">
+        <div v-for="(v, i) in c" :key="'tooltip_' + j +  i" v-if="v.tooltip && (v.tooltip.permanent || (mouse.i == i && mouse.hit == j))">
+          <div class="tooltipBox" :style="{left: v.tooltip.__left__ + 'px', top: v.tooltip.__top__ + 'px'}">
+            <div class="tooltipContain">
+              <div v-for="(p, q) in v.tooltip.data" :key="'line' + q">
+                <div>{{p.name}}{{v[p.key]}}</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -178,6 +179,10 @@ export default {
         let cP = this.latlng2xy(v)
         v.__left__ = cP.x
         v.__top__ = cP.y
+        if (v.tooltip) {
+          v.tooltip.__left__ = cP.x
+          v.tooltip.__top__ = cP.y
+        }
         np.push(v)
       })
       this.data = np
