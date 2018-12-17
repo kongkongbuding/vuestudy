@@ -1,19 +1,31 @@
 <template>
   <div :class="cName" ref="box" :style="{background: background}">
     <div v-if="!!baseMap.img" class="wrapBox" :style="position">
-      <img class="baseMap" v-if="baseMap.img" :src="baseMap.src" />
-      <canvas ref="canvas" class="drawCanvas" />
-      <div class="mapPoint" v-for="(v, i) in data" :key="'point' + i" :style="{left: v.__left__, top: v.__top__}">
-        <img :src="v.icon" :style="{marginLeft: v.size[0] / -2 + 'px', marginTop: v.size[1] / -2 + 'px'}" />
+      <img draggable="false" class="baseMap" v-if="baseMap.img" :src="baseMap.src" />
+      <canvas @click="hitClick" ref="canvas" class="drawCanvas" @mousemove="move"/>
+      <div class="mapPoint" v-for="(v, i) in data" :key="'point' + i" :style="{left: v.__left__ + 'px', top: v.__top__ + 'px'}">
+        <img draggable="false" @click="hitClick" @mouseover="hitPoint(v, i)" @mouseout="blurPoint" :src="v.icon" :style="{marginLeft: v.size[0] / -2 + 'px', marginTop: v.size[1] / -2 + 'px'}" />
+      </div>
+      <div class="tooltipBox" v-for="(v, i) in data" :key="'tooltip_p_' + i" :style="{left: v.__left__ + 'px', top: v.__top__ + 'px'}">
+        <div v-if="v.tooltip && (v.tooltip.permanent || (mouse.i == i && mouse.hit == 'points'))">
+          <div v-html="v.tooltip.html"></div>
+        </div>
+      </div>
+      <div class="tooltipBox" v-for="(v, i) in d.areas" :key="'tooltip_a_' + i" :style="{left: v.tooltip.__left__ + 'px', top: v.tooltip.__top__ + 'px'}">
+        <div v-if="v.tooltip && (v.tooltip.permanent || (mouse.i == i && mouse.hit == 'areas'))">
+          <div v-html="v.tooltip.html"></div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { hitArea, hitLine } from './utils'
 
-// const O = Object.prototype.toString
-// const isArray = v => O.call(v) === '[object Array]'
+const O = Object.prototype.toString
+const isArray = v => O.call(v) === '[object Array]'
+const isObject = v => O.call(v) === '[object Object]'
 
 export default {
   name: 'easyMap',
@@ -35,7 +47,9 @@ export default {
       default: function () {
         return {}
       }
-    }
+    },
+    click: Function,
+    hover: Function
   },
   data () {
     return {
@@ -55,6 +69,11 @@ export default {
         bounds: [[0, 20], [20, 0]], // [lng, lat]
         mapType: 'fullReal', // full | fullReal
         viewBounds: [0, 0, 1, 1] // 地图显示的区域限制
+      },
+      mouse: {
+        hit: false,
+        i: -1,
+        data: false
       }
     }
   },
@@ -128,8 +147,9 @@ export default {
     },
     draw: function () {
       let canvas = this.$refs.canvas
-      let { cof, baseMap, d } = this, { w, h } = baseMap, { bounds } = cof
+      let { cof, baseMap, d, mouse } = this, { w, h } = baseMap, { bounds } = cof
       let { points = [], lines = [], areas = [] } = d
+      let cursor = 'default'
       if (!canvas) {
         setTimeout(() => this.draw(), 200)
         return
@@ -142,55 +162,142 @@ export default {
         this.data = []
         return
       }
+      let bcof = { ctx, bounds, w, h }
+
+      let calcLatlng = (v) => {
+        if (!v.tooltip) return
+        let cP = this.latlng2xy(v.tooltip)
+        v.tooltip.__left__ = cP.x
+        v.tooltip.__top__ = cP.y
+      }
+      lines.map(v => calcLatlng(v))
+      areas.map(v => calcLatlng(v))
       let np = []
       points.map(v => {
         if (!v.lat || !v.lng) return
-        v.__left__ = (v.lng - bounds[0][0]) / (bounds[1][0] - bounds[0][0]) * w + 'px'
-        v.__top__ = (v.lat - bounds[0][1]) / (bounds[1][1] - bounds[0][1]) * h + 'px'
+        let cP = this.latlng2xy(v)
+        v.__left__ = cP.x
+        v.__top__ = cP.y
         np.push(v)
       })
       this.data = np
-      lines.map(v => {
-        ctx.strokeStyle = v.color || '#fff'
-        ctx.lineWidth = v.width || 2
-        // if (isArray(v.latlng[0]) && isArray(v.latlng[0][0])) {
-        //   v.latlng.map(c => {
-        //     this.buildPath(ctx, c, bounds, w, h)
-        //     ctx.stroke()
-        //   })
-        // } else {
-        //   this.buildPath(ctx, v.latlng, bounds, w, h)
-        //   ctx.stroke()
-        // }
-        this.buildPath(ctx, v.latlng, bounds, w, h)
-        ctx.stroke()
+      lines.map(v => this.polyDraw(v, bcof, { strokeStyle: v.color || '#fff', lineWidth: v.width || 2 }, 'stroke'))
+      areas.map(v => this.polyDraw(v, bcof, { fillStyle: v.color || '#fff' }, 'fill'))
+      if (mouse.hit && mouse.data) {
+        switch (mouse.hit) {
+          case 'lines':
+            this.polyDraw(mouse.data, bcof, { strokeStyle: mouse.data.hover || '#fff', lineWidth: mouse.data.width || 2 }, 'stroke')
+            break
+          case 'areas':
+            this.polyDraw(mouse.data, bcof, { fillStyle: mouse.data.hover || '#fff' }, 'fill')
+            break
+        }
+        cursor = 'pointer'
+      }
+      canvas.style.cursor = cursor
+    },
+    polyDraw: function (v, bcof, { lineWidth = 2, strokeStyle = '#fff', fillStyle = '#fff' }, key) {
+      let { ctx, bounds, w, h } = bcof
+      ctx.strokeStyle = strokeStyle
+      ctx.lineWidth = lineWidth
+      ctx.fillStyle = fillStyle
+      this.analysisLatlngs(v.latlng, (latlng) => {
+        this.buildPath(ctx, latlng, bounds, w, h)
+        ctx[key]()
       })
-      areas.map(v => {
-        ctx.fillStyle = v.color || '#fff'
-        // if (isArray(v.latlng[0]) && isArray(v.latlng[0][0])) {
-        //   v.latlng.map(c => {
-        //     this.buildPath(ctx, c, bounds, w, h)
-        //     ctx.closePath()
-        //     ctx.fill()
-        //   })
-        // } else {
-        //   this.buildPath(ctx, v.latlng, bounds, w, h)
-        //   ctx.closePath()
-        //   ctx.fill()
-        // }
-        this.buildPath(ctx, v.latlng, bounds, w, h)
-        ctx.fill()
-      })
+    },
+    analysisLatlngs: function (latlng, callBack) {
+      if (!latlng[0]) return
+      if (isArray(latlng[0][0]) || isObject(latlng[0][0])) {
+        latlng.map(c => this.analysisLatlngs(c, callBack))
+        return
+      }
+      callBack(latlng)
     },
     buildPath: function (ctx, d, bounds, w, h, key) {
       ctx.beginPath()
       d.map((v, i) => {
-        let a = v.lng === void 0 ? v[0] : v.lng
-        let b = v.lat === void 0 ? v[1] : v.lat
-        let x = (a - bounds[0][0]) / (bounds[1][0] - bounds[0][0]) * w
-        let y = (b - bounds[0][1]) / (bounds[1][1] - bounds[0][1]) * h
+        let { x, y } = this.latlng2xy(v)
         ctx[i ? 'lineTo' : 'moveTo'](x, y)
       })
+    },
+    latlng2xy: function (v) {
+      let a = v.lng === void 0 ? v[0] : v.lng
+      let b = v.lat === void 0 ? v[1] : v.lat
+      let { bounds } = this.cof, { w, h } = this.baseMap
+      return {
+        x: (a - bounds[0][0]) / (bounds[1][0] - bounds[0][0]) * w,
+        y: (b - bounds[0][1]) / (bounds[1][1] - bounds[0][1]) * h
+      }
+    },
+    move: function (e) {
+      let { baseMap, d } = this, { w, h } = baseMap
+      let { lines = [], areas = [] } = d
+      let canvas = this.$refs.canvas
+      if (!canvas) return
+      let cr = canvas.getBoundingClientRect()
+      let x = (e.clientX - cr.left) / cr.width * w
+      let y = (e.clientY - cr.top) / cr.height * h
+      let hitObject = false
+      lines.map((v, i) => {
+        let { width = 0 } = v
+        width = parseInt(width)
+        width = isNaN(width) ? 2 : width / 2 + 1
+        let hit = false
+        this.analysisLatlngs(v.latlng, (latlng) => {
+          let points = latlng.map(c => this.latlng2xy(c))
+          if (hitLine({ x, y }, points, width)) hit = true
+        })
+        if (hit) hitObject = { hit: 'lines', i, data: v }
+      })
+      if (hitObject) {
+        this.doHit(hitObject)
+        return
+      }
+      areas.map((v, i) => {
+        let hit = false
+        this.analysisLatlngs(v.latlng, (latlng) => {
+          let points = latlng.map(c => this.latlng2xy(c))
+          if (hitArea({ x, y }, points)) hit = true
+        })
+        if (hit) hitObject = { hit: 'areas', i, data: v }
+      })
+      this.doHit(hitObject)
+    },
+    doHit: function (v) {
+      let { hit, data } = this.mouse
+      if (!v) {
+        if (!hit || hit === 'points') return
+        this.mouse = {
+          hit: false,
+          i: -1,
+          data: false
+        }
+        this.draw()
+        return
+      }
+      if (v.hit === hit && JSON.stringify(v.data) === JSON.stringify(data)) return
+      this.mouse = v
+      this.draw()
+    },
+    hitPoint: function (v, i) {
+      this.mouse = {
+        hit: 'points',
+        i,
+        data: v
+      }
+    },
+    blurPoint: function () {
+      this.mouse = {
+        hit: false,
+        data: false
+      }
+    },
+    hitClick: function () {
+      let { mouse } = this, { hit, data } = mouse
+      if (!hit || !data) return
+      let v = JSON.parse(JSON.stringify(mouse))
+      !!this.$props.click && this.$props.click(v)
     }
   },
   computed: {
@@ -208,19 +315,19 @@ export default {
       return s
     },
     background: function () {
-      let b = this.cof.background
-      let s = b.toString().substring(0, 3)
-      if (s === 'rgb' || s.charAt(0) === '#') {
-        return b
-      }
-      return 'url(' + b + ') no-repeat center / 100% 100%'
+      let b = this.cof.background, s = b.toString().substring(0, 3)
+      return s === 'rgb' || s.charAt(0) === '#' ? b : 'url(' + b + ') no-repeat center / 100% 100%'
     }
   },
-  filters: {
-  },
+  filters: {},
   watch: {
     int: function (v) {
       this.building()
+    },
+    'mouse.hit': function () {
+      let { mouse } = this
+      let v = JSON.parse(JSON.stringify(mouse))
+      !!this.$props.hover && this.$props.hover(v)
     }
   }
 }

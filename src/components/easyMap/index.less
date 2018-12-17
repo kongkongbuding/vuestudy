@@ -11,7 +11,7 @@
   .pmNone;
   * { .pmNone }
   div { .borderBox }
-  span { .isSelect(none);}
+  span,canvas,img { .isSelect(none);}
   img[src=''] {display: none;}
   .wrapBox {
     position: relative;
@@ -19,6 +19,20 @@
     .drawCanvas { height: 100%; width: 100%; position: absolute; top: 0; left: 0; z-index: 1;}
     .mapPoint {
       position: absolute; z-index: 2;
+      img { 
+        cursor: pointer; 
+        transform-origin: center center;
+        -ms-transform-origin: center center;
+        -webkit-transform-origin: center center;
+        -moz-transform-origin: center center;
+        -o-transform-origin: center center;
+        &:hover {
+          transform: scale(1.4)
+        }
+      }
+    }
+    .tooltipBox {
+      position: absolute; z-index: 3;
     }
   }
 }

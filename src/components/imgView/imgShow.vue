@@ -147,7 +147,13 @@ export default {
   height: 100%; width: 100%; overflow: hidden; background: #fff;
   .isSelect(none);
   .basePoint { position: fixed; height: 0; width: 0; }
-  .transformBox { height: 100%; width: 100%; text-align: center; transform-origin: 0px 0px 0px;}
+  .transformBox { height: 100%; width: 100%; text-align: center;
+    transform-origin: 0px 0px;
+    -ms-transform-origin: 0px 0px;
+    -webkit-transform-origin: 0px 0px;
+    -moz-transform-origin: 0px 0px;
+    -o-transform-origin: 0px 0px;
+  }
   img { .isSelect(none); }
 }
 </style>

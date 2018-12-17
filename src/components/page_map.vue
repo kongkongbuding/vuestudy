@@ -4,6 +4,8 @@
       :d="d"
       :int="int"
       :config="config"
+      :click="clickEvent"
+      :hover="hover"
     />
   </div>
 </template>
@@ -47,13 +49,34 @@ export default {
             lat: v.lttd,
             lng: v.lgtd,
             icon: normal,
-            size: [10, 10]
+            size: [10, 10],
+            tooltip: {
+              permanent: true,
+              direction: 'top',
+              html: `<div>` +
+                `<div>stnm: ` + v.stnm + `</div>` +
+                `<div>stcd: ` + v.stcd + `</div>` +
+                `<div>batch: ` + v.batch + `</div>` +
+              `</div>`
+            }
           })
           try {
+            let latlng = JSON.parse(v.map_data)
             let area = {
-              latlng: JSON.parse(v.map_data)[0],
+              latlng,
               color: 'rgba(255, 255, 255, .7)',
-              hover: '#ffe845'
+              hover: '#ffe845',
+              tooltip: {
+                lat: latlng[0][0].lat,
+                lng: latlng[0][0].lng,
+                permanent: false,
+                direction: 'top',
+                html: `<div>` +
+                  `<div>stnm: ` + v.stnm + `</div>` +
+                  `<div>stcd: ` + v.stcd + `</div>` +
+                  `<div>batch: ` + v.batch + `</div>` +
+                `</div>`
+              }
             }
             areas.push(area)
           } catch (err) {}
@@ -66,8 +89,9 @@ export default {
             size: [10, 10]
           })
           try {
+            let latlng = JSON.parse(v.map_data)[0].map(v => [v.lng, v.lat])
             let line = {
-              latlng: JSON.parse(v.map_data)[0],
+              latlng,
               color: '#f00',
               hover: '#ffe845',
               width: 3
@@ -86,6 +110,12 @@ export default {
     ).catch(ret => console.log(ret))
   },
   methods: {
+    clickEvent: function (v) {
+      console.log(v)
+    },
+    hover: function (v) {
+      console.log(v)
+    }
   }
 }
 </script>
