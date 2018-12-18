@@ -1,3 +1,12 @@
+/*
+ * 表格组件
+ * d: 数据
+ * int: 更改值 重新初始化
+ * config: 配置项
+ * click: click 事件
+ * theme: 皮肤
+ */
+
 <template>
   <div :class="cName" ref="box" @mouseover="stopScroll" @mouseout="beginScroll">
     <div :style="{height: cof.titleH + 'px', overflow: 'hidden'}">

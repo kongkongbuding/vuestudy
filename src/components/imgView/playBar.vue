@@ -1,3 +1,12 @@
+/*
+ * 播放轴
+ * d: 数据
+ * int: 更改值 重新初始化
+ * config: 配置项
+ * change: 值发生改变时触发change事件
+ * theme: 皮肤
+ */
+
 <template>
   <div :class='cName'>
     <canvas

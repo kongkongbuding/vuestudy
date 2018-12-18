@@ -1,3 +1,12 @@
+/*
+ * 图片播放
+ * 图片展示 + 播放轴
+ * d: 数据
+ * int: 更改值 重新初始化
+ * config: 配置项
+ * theme: 皮肤
+ */
+
 <template>
   <div :class="cName">
     <div class="imgViewBox">

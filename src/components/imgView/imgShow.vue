@@ -1,3 +1,9 @@
+/*
+ * 图片展示组件
+ * int: 更改值 重新初始化
+ * img: 显示的图片
+ */
+
 <template>
   <div :class="cName" @mousewheel="mousewheel" @mousedown="mousedown" @mouseup="mouseup" @mousemove="mousemove" @dblclick="dblclick">
     <div class="basePoint" ref="basePoint"></div>
