@@ -3,21 +3,33 @@
     <div v-if="!!baseMap.img" class="wrapBox" :style="position">
       <img draggable="false" class="baseMap" v-if="baseMap.img" :src="baseMap.src" />
       <canvas @click="hitClick" ref="canvas" class="drawCanvas" @mousemove="move"/>
-      <div class="mapPoint" v-for="(v, i) in data" :key="'point' + i" :style="{left: v.__left__ + 'px', top: v.__top__ + 'px'}">
-        <img draggable="false" @click="hitClick" @mouseover="hitPoint(v, i)" @mouseout="blurPoint" :src="v.icon" :style="{marginLeft: v.size[0] / -2 + 'px', marginTop: v.size[1] / -2 + 'px'}" />
+      <div class="mapPoint" v-for="(v, i) in data" :key="'point' + i" :style="{height: v.size[0] + 'px', width: v.size[1] + 'px', left: v.__left__ + 'px', top: v.__top__ + 'px'}">
+        <img draggable="false" @click="hitClick" @mouseover="hitPoint(v, i)" @mouseout="blurPoint" :src="v.icon" :style="{left: v.size[0] / -2 + 'px', top: v.size[1] / -2 + 'px'}" />
       </div>
       <div v-for="(c, j) in d" :key="'d_' + j">
         <div v-for="(v, i) in c" :key="'tooltip_' + j +  i" v-if="v.tooltip && (v.tooltip.permanent || (mouse.i == i && mouse.hit == j))">
           <div class="tooltipBox" :style="{left: v.tooltip.__left__ + 'px', top: v.tooltip.__top__ + 'px'}">
-            <div class="tooltipContain">
-              <div v-for="(p, q) in v.tooltip.data" :key="'line' + q">
-                <div>{{p.name}}{{v[p.key]}}</div>
+            <div :class="'tooltipContain d_' + v.tooltip.direction">
+              <div class="vD">
+                <div v-if="typeof v.tooltip.data === 'string'" v-html="v.tooltip.data"></div>
+                <div v-else class="defaultContainWrap" :style="tooltipColor">
+                  <div class="defaultContain" :style="tooltipBgColor">
+                    <div v-for="(p, q) in v.tooltip.data" :key="'line' + q">
+                      <div class="tooltipLine" :style="p.style">{{p.name}}{{v[p.key]}}</div>
+                    </div>
+                  </div>
+                  <div class="triangle" :style="triangleBgColor"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="absBlock topLeft"><slot name="topLeft"></slot></div>
+    <div class="absBlock topRight"><slot name="topRight"></slot></div>
+    <div class="absBlock bottomLeft"><slot name="bottomLeft"></slot></div>
+    <div class="absBlock bottomRight"><slot name="bottomRight"></slot></div>
   </div>
 </template>
 
@@ -66,6 +78,10 @@ export default {
       },
       cof: {
         background: 'rgba(0, 0, 0, 0)',
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, .7)',
+          color: '#ff0'
+        },
         map: null,
         bounds: [[0, 20], [20, 0]], // [lng, lat]
         mapType: 'fullReal', // full | fullReal
@@ -174,8 +190,9 @@ export default {
       lines.map(v => calcLatlng(v))
       areas.map(v => calcLatlng(v))
       let np = []
-      points.map(v => {
-        if (!v.lat || !v.lng) return
+      points.map((v, i) => {
+        if (!v.lat) v.lat = -9999
+        if (!v.lng) v.lng = -9999
         let cP = this.latlng2xy(v)
         v.__left__ = cP.x
         v.__top__ = cP.y
@@ -295,6 +312,7 @@ export default {
     blurPoint: function () {
       this.mouse = {
         hit: false,
+        i: -1,
         data: false
       }
     },
@@ -322,6 +340,18 @@ export default {
     background: function () {
       let b = this.cof.background, s = b.toString().substring(0, 3)
       return s === 'rgb' || s.charAt(0) === '#' ? b : 'url(' + b + ') no-repeat center / 100% 100%'
+    },
+    tooltipBgColor: function () {
+      let { tooltip = {} } = this.cof, t = tooltip.backgroundColor
+      return t ? { background: t, outlineColor: t, borderColor: t } : {}
+    },
+    triangleBgColor: function () {
+      let { tooltip = {} } = this.cof, t = tooltip.backgroundColor
+      return t ? { borderTopColor: t, borderBottomColor: t } : {}
+    },
+    tooltipColor: function () {
+      let { tooltip = {} } = this.cof, t = tooltip.color
+      return t ? { color: t } : {}
     }
   },
   filters: {},

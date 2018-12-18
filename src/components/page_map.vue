@@ -1,12 +1,11 @@
 <template>
   <div class="ppap">
-    <easy-map
-      :d="d"
-      :int="int"
-      :config="config"
-      :click="clickEvent"
-      :hover="hover"
-    />
+    <easy-map :d="d" :int="int" :config="config" :click="clickEvent" :hover="hover">
+      <div class="legend" slot="bottomRight">
+        图例
+        <div>行1</div>
+      </div>
+    </easy-map>
   </div>
 </template>
 
@@ -31,6 +30,10 @@ export default {
       config: {
         background: bgImg,
         map: mapImg,
+        tooltip: {
+          // backgroundColor: 'rgba(0, 0, 0, .7)',
+          color: '#ff0'
+        },
         bounds: [[112.909211, 22.8231784], [113.183204, 22.5454124]],
         viewBounds: [0.1, 0.1, 0.9, 0.9],
         mapType: 'fullReal' // 'fullReal'
@@ -43,7 +46,7 @@ export default {
     this.$ajax.get(dataUrl).then(ret => {
       let data = ret.data.data
       let points = [], lines = [], areas = []
-      data.map(v => {
+      data.map((v, n) => {
         if (parseInt(v.batch) === 1) {
           points.push({
             lat: v.lttd,
@@ -55,9 +58,9 @@ export default {
             size: [10, 10],
             tooltip: {
               permanent: false,
-              direction: 'top',
+              direction: n % 2 === 0 ? 'bottom' : 'top',
               data: [
-                { name: '', key: 'stnm', textAlign: 'center' },
+                { name: '', key: 'stnm', style: { textAlign: 'center', color: '#fff', fontWeight: 'bold', fontSize: '16px' } },
                 { name: 'stcd:', key: 'stcd' },
                 { name: 'batch:', key: 'batch' }
               ]
@@ -91,8 +94,20 @@ export default {
           points.push({
             lat: v.lttd,
             lng: v.lgtd,
+            stnm: v.stnm,
+            stcd: v.stcd,
+            batch: v.batch,
             icon: over,
-            size: [10, 10]
+            size: [10, 10],
+            tooltip: {
+              permanent: false,
+              direction: 'top',
+              data: `<div style="background: rgba(5, 73, 148, .6); padding: 5px;">` +
+                `<div>站点名称：` + v.stnm + `</div>` +
+                `<div>站点编号：` + v.stcd + `</div>` +
+                `<div>显示序列：` + v.batch + `</div>` +
+              `</div>`
+            }
           })
           try {
             let latlng = JSON.parse(v.map_data)[0].map(v => [v.lng, v.lat])
@@ -128,4 +143,5 @@ export default {
 
 <style type="text/less" lang="less" scoped>
 .ppap { height: 80%; width: 90%; border: 1px solid #999; margin: 0 auto;}
+.legend { height: 100px; width: 100px; background: rgba(255, 255, 255, .5)}
 </style>
