@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import EasyTable from './easyTable/index.vue'
+import EasyTable from '../easyTable/index.vue'
 const icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAbCAYAAABvCO8sAAABMUlEQVRIie3WMUuCQRzH8e/zJA+SkUWQOVhobrX1EmqsWRpqq0DozdQgiEttjtFcL6GlRu2hDAUXdXhA1J6n4cGW6p7/nSAEz2+9u9/nbjjuLGpBH0gzn6zYc4K+E4P/H0yoBi2gugc7y+qSlwFcPEEgAJUnPMhEYwC7adhfF2gq0LGhXJCVAJS3wzXG4HEOMkk5uJGEUs4QXHPgZEuOTXO6CauOAXiWh8UFfTCVgPO8JlhcgsOsPjbNURYKKQ3wsgi2ZQ7aVtghBgPJZYqIquIHeNUAfwb0M4Drhgb46sF9xxy8a4PraYAAVRe8iT7mTaDmquf8CvZGcPuuD968QX9sAALUW9AZyrH2EOof0fP+BEc+VJpysNKEsT8DCPDQDZ+eqDwP4LEr25gV/9piUDdfiK5FiII5O4IAAAAASUVORK5CYII='
 export default {
   name: 'tableTest',

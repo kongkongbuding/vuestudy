@@ -37,17 +37,17 @@ export default new Router({
     {
       path: '/table',
       name: '表格',
-      component: res => require(['@/components/page_table.vue'], res)
+      component: res => require(['@/components/demo/page_table.vue'], res)
     },
     {
       path: '/img',
       name: '雷达图&包括|图片|播放轴&可分开单独使用',
-      component: res => require(['@/components/page_img.vue'], res)
+      component: res => require(['@/components/demo/page_img.vue'], res)
     },
     {
       path: '/map',
       name: '概化图&点线面等',
-      component: res => require(['@/components/page_map.vue'], res)
+      component: res => require(['@/components/demo/page_map.vue'], res)
     },
     {
       path: '/t/:id',
