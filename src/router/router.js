@@ -50,6 +50,11 @@ export default new Router({
       component: res => require(['@/components/demo/page_map.vue'], res)
     },
     {
+      path: '/drag',
+      name: '拖拽',
+      component: res => require(['@/components/demo/page_drag.vue'], res)
+    },
+    {
       path: '/t/:id',
       component: resolve => require(['@/components/HelloWorld.vue'], resolve),
       props: {
