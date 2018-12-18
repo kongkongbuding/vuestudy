@@ -192,7 +192,7 @@ export default {
       }
       let bcof = { ctx, bounds, w, h }
 
-      let calcLatlng = (v) => {
+      let calcLatlng = v => {
         if (!v.tooltip) return
         let cP = this.latlng2xy(v.tooltip)
         v.tooltip.__left__ = cP.x
@@ -234,7 +234,7 @@ export default {
       ctx.strokeStyle = strokeStyle
       ctx.lineWidth = lineWidth
       ctx.fillStyle = fillStyle
-      this.analysisLatlngs(v.latlng, (latlng) => {
+      this.analysisLatlngs(v.latlng, latlng => {
         this.buildPath(ctx, latlng, bounds, w, h)
         ctx[key]()
       })
