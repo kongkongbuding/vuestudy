@@ -134,8 +134,6 @@ export default {
       return 'translate(' + p[0] + 'px, ' + p[1] + 'px) scale(' + p[2] + ')'
     }
   },
-  filters: {
-  },
   watch: {
     int: function () {
       this.initImg(this.img)

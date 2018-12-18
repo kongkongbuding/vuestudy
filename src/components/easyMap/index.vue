@@ -365,7 +365,6 @@ export default {
       return t ? { color: t } : {}
     }
   },
-  filters: {},
   watch: {
     int: function (v) {
       this.building()

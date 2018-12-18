@@ -120,9 +120,7 @@ export default {
       if (!out || !inner[0] || !wrap) return false
       let oh = out.offsetHeight, ih = inner[0].offsetHeight, opt = this.opt
       if (oh < ih && !opt.hover && this.$props.config.autoScroll) {
-        if (this.copy.length === 1) {
-          this.copy.push(2)
-        }
+        if (this.copy.length === 1) this.copy.push(2)
         let speed = Math.ceil(1000 / this.cof.scrollSpeed)
         clearInterval(opt.timer)
         opt.timer = setInterval(() => {
@@ -168,9 +166,7 @@ export default {
     cof: function () {
       let cof = Object.assign({}, this.defaultConfig, this.$props.config)
       cof.col.map((v, i) => {
-        if (typeof v.name === 'string') {
-          cof.col[i].name = v.name.split('&')
-        }
+        if (typeof v.name === 'string') cof.col[i].name = v.name.split('&')
       })
       return cof
     },
@@ -182,15 +178,11 @@ export default {
             if (v[p] === void 0) continue
             let ret = false, { min, max } = s[p]
             if (min !== void 0 && max !== void 0) {
-              if (v[p] >= min && v[p] <= max) {
-                ret = true
-              }
+              if (v[p] >= min && v[p] <= max) ret = true
             } else if ((min !== void 0 && v[p] >= min) || (max !== void 0 && v[p] <= max)) {
               ret = true
             }
-            if (ret) {
-              v[s[p].target === 'tr' ? '__tr__' : p + '__td__'] = s[p].style || {}
-            }
+            if (ret) v[s[p].target === 'tr' ? '__tr__' : p + '__td__'] = s[p].style || {}
           }
         })
       }

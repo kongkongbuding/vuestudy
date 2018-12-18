@@ -155,9 +155,7 @@ export default {
         case 'btn_play':
           if (this.c.timer === null) {
             this.changeI(1)
-            this.c.timer = setInterval(() => {
-              this.changeI(1)
-            }, this.cof.speed)
+            this.c.timer = setInterval(() => this.changeI(1), this.cof.speed)
           } else {
             clearInterval(this.c.timer)
             this.c.timer = null
@@ -193,6 +191,7 @@ export default {
       this.c.tickInterval = tickInterval
       this.c.tickIndex = tickIndex
       let start = BLEFT + INDENT + BARLEFT
+
       // 背景色
       ctx.fillStyle = cof.backgroundColor
       ctx.fillRect(0, 0, w, h)
@@ -329,8 +328,6 @@ export default {
       let text = d[i].tm
       return text
     }
-  },
-  filters: {
   },
   watch: {
     int: function (v) {

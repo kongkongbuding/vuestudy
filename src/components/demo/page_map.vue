@@ -40,8 +40,6 @@ export default {
       }
     }
   },
-  created () {
-  },
   mounted () {
     this.$ajax.get(dataUrl).then(ret => {
       let data = ret.data.data

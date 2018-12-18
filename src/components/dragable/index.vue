@@ -34,8 +34,6 @@ export default {
       }
     }
   },
-  created () {
-  },
   mounted () {
     this.$nextTick(function () {
       let box = this.$refs.dragbox

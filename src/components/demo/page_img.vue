@@ -36,8 +36,6 @@ export default {
       }
     }
   },
-  created () {
-  },
   mounted () {
     this.$ajax.get(radar).then(ret => {
       let data = ret.data
@@ -45,8 +43,6 @@ export default {
       this.int++
     }
     ).catch(ret => console.log(ret))
-  },
-  methods: {
   }
 }
 </script>

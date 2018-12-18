@@ -79,8 +79,6 @@ export default {
       int: 1
     }
   },
-  created () {
-  },
   mounted () {
     setTimeout(() => {
       this.w = 600

@@ -26,12 +26,6 @@ export default {
       left: 100,
       top: 200
     }
-  },
-  created () {
-  },
-  mounted () {
-  },
-  methods: {
   }
 }
 </script>

@@ -56,8 +56,6 @@ export default {
       playConfig: {}
     }
   },
-  mounted: function () {
-  },
   methods: {
     imgChange: function (i) {
       let v = this.data[i]
@@ -70,8 +68,6 @@ export default {
     cName: function () {
       return 'imgView ' + this.theme
     }
-  },
-  filters: {
   },
   watch: {
     int: function (v) {
