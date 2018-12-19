@@ -1,5 +1,5 @@
 /*
- * v-tooltip
+ * v-tooltip.top.bottom.left.right.click
  */
 
 import Vue from 'vue'
@@ -17,14 +17,15 @@ if (Vue.directive(NAME) === void 0) {
   Vue.directive(NAME, {
     inserted: (el, binding) => {
       let tip = document.getElementsByClassName(CLASS)[0]
+      let { value, modifiers } = binding
+      let event = modifiers['click'] ? 'click' : 'mouseover'
       if (!tip) {
         tip = document.createElement('div')
         tip.className = CLASS
         tip.innerHTML = '<div style="height: ' + TH + 'px; line-height: ' + TH + 'px;" class="' + BASEC + 'text"></div><div class="' + BASEC + 'arrow"></div>'
         document.body.appendChild(tip)
       }
-      el.addEventListener('mouseover', () => {
-        let { value, modifiers } = binding
+      el.addEventListener(event, () => {
         let d = 'auto', l = HIDE, t = HIDE
         DIR.map(v => {
           if (modifiers[v]) d = v
