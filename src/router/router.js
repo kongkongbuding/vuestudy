@@ -55,6 +55,11 @@ export default new Router({
       component: res => require(['@/components/demo/page_drag.vue'], res)
     },
     {
+      path: '/tooltip',
+      name: 'tooltip',
+      component: res => require(['@/components/demo/page_tooltip.vue'], res)
+    },
+    {
       path: '/t/:id',
       component: resolve => require(['@/components/HelloWorld.vue'], resolve),
       props: {

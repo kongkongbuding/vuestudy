@@ -93,6 +93,7 @@ export default {
   },
   beforeDestroy: function () {
     this.stopScroll()
+    window.removeEventListener('resize', this.initEvent)
   },
   methods: {
     initEvent: function () {

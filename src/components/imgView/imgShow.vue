@@ -46,6 +46,9 @@ export default {
       window.addEventListener('resize', this.initEvent)
     })
   },
+  beforeDestroy: function () {
+    window.removeEventListener('resize', this.initEvent)
+  },
   methods: {
     initEvent: function () {
       this.initImg(this.img)

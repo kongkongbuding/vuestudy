@@ -12,6 +12,12 @@
 <script>
 
 const isNumber = v => !isNaN(parseFloat(v)) && isFinite(v)
+const AE = 'addEventListener'
+const RE = 'removeEventListener'
+const MM = 'mousemove'
+const MD = 'mousedown'
+const MU = 'mouseup'
+const AG = 'alowdrag'
 
 export default {
   name: 'dragable',
@@ -56,7 +62,7 @@ export default {
     getDragDom: function (box) {
       let dom = box.childNodes, len = dom.length, arr = []
       if (box.getAttribute) {
-        let alow = box.getAttribute('alowdrag')
+        let alow = box.getAttribute(AG)
         if (alow !== null && alow !== void 0) arr.push(box)
       }
       for (let i = 0; i < len; i++) {
@@ -67,17 +73,17 @@ export default {
     },
     initEvent: function () {
       let body = document.body
-      body.addEventListener('mousemove', this.move)
-      body.addEventListener('mouseup', this.stop)
+      body[AE](MM, this.move)
+      body[AE](MU, this.stop)
       let { dragDom } = this
       for (let i = 0, len = dragDom.length; i < len; i++) {
-        dragDom[i].addEventListener('mousedown', this.start)
+        dragDom[i][AE](MD, this.start)
       }
     },
     removeEvent: function () {
       let body = document.body
-      body.removeEventListener('mousemove', this.move)
-      body.removeEventListener('mouseup', this.stop)
+      body[RE](MM, this.move)
+      body[RE](MU, this.stop)
     },
     start: function (e) {
       if (e.stopPropagation) {

@@ -14,8 +14,8 @@
       @mousemove="move"
       @click="click"
     />
-    <div v-if="tipShow" class="tipBox" :style="{left: c.e[0] + 'px', top: c.e[1] + 'px'}">
-      <div class="tipText">{{tipText}}</div>
+    <div v-if="tipShow" class="tipBox" :style="{left: Math.min(c.w - tipWidth, Math.max(0, c.e[0] - tipWidth / 2)) + 'px', top: c.e[1] + 'px'}">
+      <div ref='tip' class="tipText">{{tipText}}</div>
     </div>
   </div>
 </template>
@@ -80,7 +80,8 @@ export default {
         ]
       },
       tipShow: false,
-      tipTimer: null
+      tipTimer: null,
+      tipWidth: 120
     }
   },
   beforeMount: function () {
@@ -94,6 +95,7 @@ export default {
   },
   beforeDestroy: function () {
     clearInterval(this.c.timer)
+    window.removeEventListener('resize', this.initEvent)
   },
   methods: {
     initEvent: function () {
@@ -339,6 +341,16 @@ export default {
     'c.i': function (i) {
       !!this.$props.change && this.$props.change(i)
       this.draw()
+    },
+    tipShow: function (v) {
+      if (!v) return
+      this.$nextTick(function () {
+        let dom = this.$refs.tip
+        if (!dom) return
+        let w = dom.offsetWidth
+        if (w === 0) return
+        this.tipWidth = w
+      })
     }
   }
 }
@@ -352,7 +364,7 @@ export default {
   }
   .tipBox {
     position: absolute; z-index: 2;
-    .tipText { position: relative; left: -50%; padding: 2px 8px; background: rgba(0, 0, 0, .7); border: 1px solid #333; white-space: nowrap; color: #fff; font-size: 14px;}
+    .tipText { padding: 2px 8px; background: rgba(0, 0, 0, .7); border: 1px solid #333; white-space: nowrap; color: #fff; font-size: 14px;}
   }
 }
 </style>

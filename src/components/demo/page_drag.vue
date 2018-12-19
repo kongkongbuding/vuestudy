@@ -7,6 +7,7 @@
         </div>
         <div class="boxBody">
           没有内容
+          <div class="drag" alowdrag ></div>
         </div>
       </div>
     </dragable>
@@ -37,5 +38,6 @@ export default {
     height: 40px; background: #bfc981; width: 100%;
     .closeBtn { height: 24px; width: 24px; float: right; margin: 8px; background: #d0d; cursor: pointer;}
   }
+  .drag { height: 40px; width: 40px; background: #fff; margin: 30px auto;}
 }
 </style>

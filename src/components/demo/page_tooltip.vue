@@ -1,0 +1,44 @@
+<template>
+  <div>
+    <div class="boxing">
+      <div class="boxBody">
+        <span v-tooltip="'longlonglonglonglonglong'">auto</span>
+        <span v-tooltip.top="'top'">top</span>
+        <span v-tooltip.bottom="'bottom'">bottom</span>
+        <span v-tooltip.left="'left'">left</span>
+        <span v-tooltip.right="'right'">right</span>
+        <span v-tooltip="'auto'">auto</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+export default {
+  name: 'pageTooltip',
+  data () {
+    return {
+      left: 100,
+      top: 200
+    }
+  },
+  mounted: function () {
+    console.log(this)
+  }
+}
+</script>
+
+<style type="text/less" lang="less" scoped>
+.boxing {
+  width: 300px; height: 240px; background: #cecece; border: #aaa;
+  .title {
+    height: 40px; background: #bfc981; width: 100%;
+    .closeBtn { height: 24px; width: 24px; float: right; margin: 8px; background: #d0d; cursor: pointer;}
+  }
+  .boxBody {
+    text-align: left;
+    span { margin: 10px; }
+  }
+}
+</style>
