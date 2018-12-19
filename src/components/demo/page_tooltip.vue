@@ -7,7 +7,7 @@
         <span v-tooltip.bottom="'bottom'">bottom</span>
         <span v-tooltip.left="'left'">left</span>
         <span v-tooltip.right="'right'">right</span>
-        <span v-tooltip.click="'auto'">auto</span>
+        <span v-tooltip.click="'click'">click</span>
       </div>
     </div>
   </div>
