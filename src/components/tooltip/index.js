@@ -9,6 +9,7 @@ const DIR = ['top', 'bottom', 'left', 'right']
 const NAME = 'tooltip'
 const BASEC = 'tooltip-target-'
 const CLASS = BASEC + 'atk'
+const HIDE = -99999
 const DIS = 6
 const TH = 24
 
@@ -24,7 +25,7 @@ if (Vue.directive(NAME) === void 0) {
       }
       el.addEventListener('mouseover', () => {
         let { value, modifiers } = binding
-        let d = 'auto', l = -99999, t = -99999
+        let d = 'auto', l = HIDE, t = HIDE
         DIR.map(v => {
           if (modifiers[v]) d = v
         })
@@ -67,8 +68,8 @@ if (Vue.directive(NAME) === void 0) {
         if (arrow) arrow.className = BASEC + 'arrow ' + d
       })
       el.addEventListener('mouseout', () => {
-        tip.style.top = '-99999px'
-        tip.style.left = '-99999px'
+        tip.style.top = HIDE + 'px'
+        tip.style.left = HIDE + 'px'
       })
     }
   })
