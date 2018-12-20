@@ -6,7 +6,12 @@ import App from './App.vue'
 import router from './router/router'
 import store from './store/store'
 import axios from 'axios'
-import './components/tooltip/index'
+
+import Tooltip from './plugins/tooltip/index'
+import Loading from './plugins/loading/index'
+
+Vue.use(Tooltip)
+Vue.use(Loading, { skin: 'pc' })
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://192.168.118.226:50053' : ''
 Vue.prototype.$ajax = axios

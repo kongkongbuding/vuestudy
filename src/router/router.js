@@ -60,6 +60,11 @@ export default new Router({
       component: res => require(['@/components/demo/page_tooltip.vue'], res)
     },
     {
+      path: '/loading',
+      name: 'loading',
+      component: res => require(['@/components/demo/page_loading.vue'], res)
+    },
+    {
       path: '/t/:id',
       component: resolve => require(['@/components/HelloWorld.vue'], resolve),
       props: {
