@@ -15,9 +15,12 @@ export default new Router({
         require(['@/components/PhotoPreview/PhotoPreview.vue'], resolve)
     },
     {
+      path: '/mock',
+      component: resolve => require(['@/views/test/mock.vue'], resolve)
+    },
+    {
       path: '/test1',
-      component: resolve =>
-        require(['@/views/test.vue'], resolve)
+      component: resolve => require(['@/components/Upload/Upload.vue'], resolve)
     },
     {
       path: '/f',

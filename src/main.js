@@ -5,7 +5,13 @@ import 'normalize.css'
 import App from './App.vue'
 import router from './router/router'
 import store from './store/store'
-import axios from 'axios'
+import axios from './plugins/axios/index'
+import apiUrl from './api/axios'
+
+Vue.use(axios, apiUrl, {
+  baseUrl: 'localhost:8080/'
+})
+// import axios from 'axios'
 /* import VuePreview from 'vue-preview'
 import VueTouch from 'vue-touch' */
 
@@ -26,8 +32,9 @@ Vue.use(VuePreview, {
 }) */
 // axios是一个基于promise的HTTP库，
 // baseurl 将自动加在URL前面，除非URL是一个绝对URL
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://192.168.118.226:50053' : ''
-Vue.prototype.$ajax = axios
+// axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://192.168.118.226:50053' : ''
+// axios.defaults.baseURL = ''
+// Vue.prototype.$ajax = axios
 
 // Vue.config.productionTip = false // 设置为false以阻止vue在启动时生成生产提示
 // window.vue = Vue
