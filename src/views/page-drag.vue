@@ -15,8 +15,7 @@
 </template>
 
 <script>
-import Dragable from '../dragable/index.vue'
-
+import Dragable from 'cll-vue-components/lib/dragable'
 export default {
   name: 'tableTest',
   components: {

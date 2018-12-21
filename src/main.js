@@ -7,8 +7,8 @@ import router from './router/router'
 import store from './store/store'
 import axios from 'axios'
 
-import Tooltip from './plugins/tooltip/index'
-import Loading from './plugins/loading/index'
+import Tooltip from 'cll-vue-components/plugins/tooltip'
+import Loading from 'cll-vue-components/plugins/loading'
 
 Vue.use(Tooltip)
 Vue.use(Loading, { skin: 'pc' })
@@ -17,9 +17,8 @@ axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://192.16
 Vue.prototype.$ajax = axios
 
 Vue.config.productionTip = false
-// window.vue = Vue
 
-Vue.filter('first', function (v) {
+Vue.filter('add', function (v) {
   return v + 1
 })
 

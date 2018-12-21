@@ -13,6 +13,7 @@ export default {
   },
   methods: {
     show: function () {
+      if (!this.$loading) return
       this.$loading.show('数据加载中...')
       setTimeout(() => this.hide(), 3000)
     },

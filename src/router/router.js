@@ -37,32 +37,32 @@ export default new Router({
     {
       path: '/table',
       name: '表格',
-      component: res => require(['@/components/demo/page_table.vue'], res)
+      component: res => require(['@/views/page-table.vue'], res)
     },
     {
       path: '/img',
       name: '雷达图&包括|图片|播放轴&可分开单独使用',
-      component: res => require(['@/components/demo/page_img.vue'], res)
+      component: res => require(['@/views/page-img.vue'], res)
     },
     {
       path: '/map',
       name: '概化图&点线面等',
-      component: res => require(['@/components/demo/page_map.vue'], res)
+      component: res => require(['@/views/page-map.vue'], res)
     },
     {
       path: '/drag',
       name: '拖拽',
-      component: res => require(['@/components/demo/page_drag.vue'], res)
+      component: res => require(['@/views/page-drag.vue'], res)
     },
     {
       path: '/tooltip',
       name: 'tooltip',
-      component: res => require(['@/components/demo/page_tooltip.vue'], res)
+      component: res => require(['@/views/page-tooltip.vue'], res)
     },
     {
       path: '/loading',
       name: 'loading',
-      component: res => require(['@/components/demo/page_loading.vue'], res)
+      component: res => require(['@/views/page-loading.vue'], res)
     },
     {
       path: '/t/:id',
