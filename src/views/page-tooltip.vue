@@ -16,7 +16,6 @@
 <script>
 
 export default {
-  name: 'pageTooltip',
   data () {
     return {
       left: 100,

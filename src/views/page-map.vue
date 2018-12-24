@@ -19,7 +19,6 @@ import over from '../assets/over.png'
 const dataUrl = 'http://192.168.118.226:50053/webapi/api/v1.1/basic/data?key=s_water_rain_info&begin_time=2018-12-14 12:00:00&end_time=2018-12-14 15:00:00&begin_time_rain=2018-12-14 08:00:00&end_time_rain=2018-12-14 15:00:00'
 
 export default {
-  name: 'mapTest',
   components: {
     EasyMap
   },

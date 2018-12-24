@@ -45,6 +45,11 @@ export default new Router({
       component: res => require(['@/views/page-img.vue'], res)
     },
     {
+      path: '/easyImg',
+      name: '图片轮播',
+      component: res => require(['@/views/page-easyImg.vue'], res)
+    },
+    {
       path: '/map',
       name: '概化图&点线面等',
       component: res => require(['@/views/page-map.vue'], res)
