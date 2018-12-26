@@ -70,6 +70,11 @@ export default new Router({
       component: res => require(['@/views/page-loading.vue'], res)
     },
     {
+      path: '/canvas',
+      name: 'canvas 绘制动画',
+      component: res => require(['@/views/page-canvas.vue'], res)
+    },
+    {
       path: '/t/:id',
       component: resolve => require(['@/components/HelloWorld.vue'], resolve),
       props: {
