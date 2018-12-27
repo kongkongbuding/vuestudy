@@ -5,10 +5,16 @@
         <canvas-animate icon='circle' />
       </div>
       <div class="can">
+        <canvas-animate icon='polygon-3' />
+      </div>
+      <div class="can">
         <canvas-animate icon='polygon-5' />
       </div>
       <div class="can">
-        <canvas-animate icon='polygon-8' />
+        <canvas-animate icon='stars-5' />
+      </div>
+      <div class="can">
+        <canvas-animate icon='stars-8' />
       </div>
       <div class="can">
         <canvas-animate :icon='icon' />
