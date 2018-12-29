@@ -9,9 +9,13 @@ import axios from 'axios'
 
 import Tooltip from 'cll-vue-components/plugins/tooltip'
 import Loading from 'cll-vue-components/plugins/loading'
+import Badge from 'cll-vue-components/plugins/badge'
+import Message from 'cll-vue-components/plugins/message'
 
 Vue.use(Tooltip)
 Vue.use(Loading, { skin: 'pc' })
+Vue.use(Badge)
+Vue.use(Message)
 
 axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://192.168.118.226:50053' : ''
 Vue.prototype.$ajax = axios

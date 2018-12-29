@@ -35,7 +35,7 @@ export default {
         },
         bounds: [[112.909211, 22.8231784], [113.183204, 22.5454124]],
         viewBounds: [0.1, 0.1, 0.9, 0.9],
-        mapType: 'fullReal' // 'fullReal'
+        mapType: 'real' // 'full'
       }
     }
   },

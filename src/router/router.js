@@ -6,6 +6,10 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/h',
+      component: resolve => require(['@/components/HelloWorld.vue'], resolve)
+    },
+    {
       path: '/f',
       component: resolve => require(['@/components/a.vue'], resolve)
     },
