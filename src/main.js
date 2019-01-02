@@ -17,17 +17,22 @@ Vue.use(Loading, { skin: 'pc' })
 Vue.use(Badge)
 Vue.use(Message)
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'http://192.168.118.226:50053' : ''
-Vue.prototype.$ajax = axios
-
 Vue.config.productionTip = false
 
 Vue.filter('add', function (v) {
   return v + 1
 })
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+axios.request({
+  url: './api/urlHelp.json'
+})
+  .then(ret => {
+    var urlHelp = ret.data
+    axios.defaults.urlHelp = urlHelp
+    Vue.prototype.$ajax = axios
+    new Vue({
+      router,
+      store,
+      render: h => h(App)
+    }).$mount('#app')
+  })

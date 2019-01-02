@@ -20,6 +20,12 @@ const isObject = v => O.call(v) === '[object Object]'
 // 方法
 const isFunction = v => O.call(v) === '[object Function]'
 
+// date
+const isDate = v => O.call(v) === '[object Date]'
+
+// isFile
+const isFile = v => O.call(v) === '[object File]'
+
 // 数字
 const isNumber = v => !isNaN(parseFloat(v)) && isFinite(v)
 
@@ -27,12 +33,16 @@ const isNumber = v => !isNaN(parseFloat(v)) && isFinite(v)
 const isSymbol = v =>
   typeof s === 'symbol' || ('Symbol' in window && s instanceof window.Symbol)
 
+// buffer
 const isBuffer = v =>
   v &&
   typeof v === 'object' &&
   typeof v.copy === 'function' &&
   typeof v.fill === 'function' &&
   typeof v.readUInt8 === 'function'
+
+// isFormData
+const isFormData = v => (typeof FormData !== 'undefined') && (v instanceof FormData)
 
 // 手机
 const isPhone = v => /^0*1\d{10}$/.test(v)
@@ -347,14 +357,53 @@ const sort = (v, { order = 'asc', by }) => {
 // 空函数
 const noop = function () {}
 
+// 循环
+function forEach(obj, fn) {
+  if (obj === null || typeof obj === 'undefined') return
+
+  if (typeof obj !== 'object') obj = [obj]
+
+  if (isArray(obj)) {
+    for (var i = 0, l = obj.length; i < l; i++) {
+      fn.call(null, obj[i], i, obj);
+    }
+    return
+  }
+
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      fn.call(null, obj[key], key, obj);
+    }
+  }
+}
+
+// 混入
+const merge = () => {
+  let ret = {}
+  function assignValue (val, key) {
+    if (typeof ret[key] === 'object' && typeof val === 'object') {
+      ret[key] = merge(ret[key], val);
+    } else {
+      ret[key] = val;
+    }
+  }
+  for (let i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return ret
+}
+
 export default {
   isString,
   isArray,
   isObject,
   isFunction,
+  isDate,
+  isFile,
   isNumber,
   isSymbol,
   isBuffer,
+  isFormData,
   isPhone,
   isEmail,
   isRegExp,
@@ -392,5 +441,7 @@ export default {
   encode,
   decode,
   sort,
-  noop
+  noop,
+  forEach,
+  merge
 }

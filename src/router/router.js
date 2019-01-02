@@ -11,7 +11,7 @@ export default new Router({
     },
     {
       path: '/f',
-      component: resolve => require(['@/components/a.vue'], resolve)
+      component: resolve => require(['@/components/b.vue'], resolve)
     },
     {
       path: '/keepalive1',

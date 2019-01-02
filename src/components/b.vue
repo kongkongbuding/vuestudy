@@ -18,16 +18,30 @@ export default {
     return {
       s: this.$store.state,
       time: moment().format('YYYY/MM/DD HH:mm:ss'),
-      tm: ''
+      tm: '',
+      ajax: false
     }
   },
-  methods: {},
+  methods: {
+    initAjax: function () {
+      this.getTime()
+    },
+    getTime: function () {
+      this.$ajax.get('time', {
+        params: {
+          a: 1
+        }
+      })
+        .then(result => {
+          console.log(result)
+          this.tm = result.data.data
+        })
+        .catch(result => console.log(result))
+    }
+  },
   computed: {},
   mounted: function () {
-    this.$ajax.get('/webapi/api/v1/jointduty/s-sysdate').then(result => {
-      this.tm = result.data.data
-    }
-    ).catch(result => console.log(result))
+    this.initAjax()
   }
 }
 </script>
