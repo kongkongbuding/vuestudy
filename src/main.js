@@ -5,7 +5,7 @@ import 'normalize.css'
 import App from './App.vue'
 import router from './router/router'
 import store from './store/store'
-import axios from 'axios'
+import axios from 'axios-dev2'
 
 import Tooltip from 'cll-vue-components/plugins/tooltip'
 import Loading from 'cll-vue-components/plugins/loading'
@@ -27,9 +27,10 @@ axios.request({
   url: './api/urlHelp.json'
 })
   .then(ret => {
-    var urlHelp = ret.data
-    axios.defaults.urlHelp = urlHelp
-    Vue.prototype.$ajax = axios
+    let ajax = axios.create({
+      urlHelp: ret.data
+    })
+    Vue.prototype.$ajax = ajax
     new Vue({
       router,
       store,

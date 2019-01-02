@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "axios-dev2": "0.0.2",
     "babel-polyfill": "^6.26.0",
     "cll-loading": "^1.0.0",
     "cll-vue-components": "0.0.10",

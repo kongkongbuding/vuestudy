@@ -33,7 +33,6 @@ export default {
         }
       })
         .then(result => {
-          console.log(result)
           this.tm = result.data.data
         })
         .catch(result => console.log(result))

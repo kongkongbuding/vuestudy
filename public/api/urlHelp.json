@@ -2,6 +2,7 @@
   "isReal": false,
   "baseURL": "http://192.168.118.226:50053/",
   "api": {
-    "time": "webapi/api/v1/jointduty/s-sysdate?a=2"
+    "time": "webapi/api/v1/jointduty/s-sysdate?a=2",
+    "postman": "http://47.95.1.229:8069/webapi/api/v2/LED/set_led_config"
   }
 }
