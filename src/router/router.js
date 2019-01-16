@@ -79,6 +79,16 @@ export default new Router({
       component: res => require(['@/views/page-canvas.vue'], res)
     },
     {
+      path: '/ztree',
+      name: 'page-ztree',
+      component: res => require(['@/views/page-ztree.vue'], res)
+    },
+    {
+      path: '/datepicker',
+      name: 'page-date-picker',
+      component: res => require(['@/views/page-date-picker.vue'], res)
+    },
+    {
       path: '/t/:id',
       component: resolve => require(['@/components/HelloWorld.vue'], resolve),
       props: {

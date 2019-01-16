@@ -126,7 +126,6 @@ const randomString = n => {
     i = 0
   for (; i < n; i++)
     tmp += String.fromCharCode(Math.round(Math.random() * 26) + 97)
-
   return tmp
 }
 

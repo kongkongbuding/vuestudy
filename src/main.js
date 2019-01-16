@@ -11,11 +11,17 @@ import Tooltip from 'cll-vue-components/plugins/tooltip'
 import Loading from 'cll-vue-components/plugins/loading'
 import Badge from 'cll-vue-components/plugins/badge'
 import Message from 'cll-vue-components/plugins/message'
+import Ztree from 'cll-vue-components/plugins/ztree'
+import DatePicker from 'cll-vue-components/plugins/datePicker'
 
 Vue.use(Tooltip)
 Vue.use(Loading, { skin: 'pc' })
 Vue.use(Badge)
 Vue.use(Message)
+Vue.use(Ztree)
+Vue.use(DatePicker)
+// Vue.component(Button.name, Button)
+// Vue.component(DatePicker.name, DatePicker)
 
 Vue.config.productionTip = false
 
@@ -31,6 +37,7 @@ axios.request({
       urlHelp: ret.data
     })
     Vue.prototype.$ajax = ajax
+    window.$ajax = ajax
     new Vue({
       router,
       store,

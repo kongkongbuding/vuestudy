@@ -4,6 +4,14 @@
     <div>
       {{tm}}
     </div>
+    <div style="height: 20px; width: 150px; border: 1px">
+      <!-- <el-button>默认按钮</el-button> -->
+      <el-date-picker
+        v-model="value1"
+        type="date"
+        placeholder="选择日期">
+      </el-date-picker>
+    </div>
   </div>
 </template>
 
@@ -19,7 +27,8 @@ export default {
       s: this.$store.state,
       time: moment().format('YYYY/MM/DD HH:mm:ss'),
       tm: '',
-      ajax: false
+      ajax: false,
+      value1: ''
     }
   },
   methods: {
