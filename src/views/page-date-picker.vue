@@ -1,10 +1,10 @@
 <template>
   <div class="datePanel">
-    <div class="dateTime">
-      <date-picker :quickSelection='quickSelection' />
-    </div>
     <div class="range">
-      <date-picker type="range" startDate="2018-12-31 12:12:12" endDate="2019-01-14 12:13:14" format="yyyy-MM-dd HH:mm:ss" :quickSelection='quickSelection' :change='timeChange' />
+      <date-picker type="range" startDate="2018/12/31 12:12:13" endDate="2019/01/14 12:13:14" format="yyyy/MM/dd HH:mm:ss" :quickSelection='quickSelection' :change='timeChange' />
+    </div>
+    <div class="dateTime">
+      <date-picker startDate="2018年12月30日 13:14" format="yyyy年MM月dd日 HH:mm" />
     </div>
   </div>
 </template>
@@ -12,7 +12,7 @@
 <script>
 
 export default {
-  name: 'pageTooltip',
+  name: 'pagepicker',
   data () {
     return {
       quickSelection: [
@@ -40,7 +40,7 @@ export default {
         {
           name: '自定义',
           value: function () {
-            return '2018-03-03 03:03:03'
+            return '2018/03/03 03:03:03'
           }
         }
       ]

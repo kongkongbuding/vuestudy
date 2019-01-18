@@ -89,6 +89,11 @@ export default new Router({
       component: res => require(['@/views/page-date-picker.vue'], res)
     },
     {
+      path: '/calendar',
+      name: 'page-calendar',
+      component: res => require(['@/views/page-calendar.vue'], res)
+    },
+    {
       path: '/t/:id',
       component: resolve => require(['@/components/HelloWorld.vue'], resolve),
       props: {

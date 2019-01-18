@@ -16,7 +16,7 @@
     "axios-dev2": "0.0.2",
     "babel-polyfill": "^6.26.0",
     "cll-loading": "^1.0.0",
-    "cll-vue-components": "0.0.13",
+    "cll-vue-components": "0.0.15",
     "element-ui": "^2.4.11",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
