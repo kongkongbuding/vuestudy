@@ -79,12 +79,11 @@ const emptyObject = Object.freeze({})
 
 // url 参数  / vue 自带 this.$route.query
 const getParams = () => {
-  let e,
+  let e = {},
     t = location.hash.slice(1) || '/',
     n = t.split('?')[1]
   if (!n) return e
   n = n.split('&')
-  e = {}
   for (let r = 0, len = n.length, f = void 0; r < len; r++)
     (f = n[r].split('=')), (e[f[0]] = f[1])
   return e
@@ -392,6 +391,26 @@ const merge = () => {
   return ret
 }
 
+// string to json
+const deepParse = d => {
+  if (isArray(d)) {
+    for (var i = 0; d[i]; i++) d[i] = deepParse(d[i])
+    return d
+  }
+  if (isObject(d)) {
+    for (var p in d) d[p] = deepParse(d[p])
+    return d
+  }
+  if (isString(d)) {
+    try {
+      d = JSON.parse(d)
+    } catch (e) {}
+    if (isString(d)) return d
+    return deepParse(d)
+  } 
+  return d
+}
+
 export default {
   isString,
   isArray,
@@ -442,5 +461,6 @@ export default {
   sort,
   noop,
   forEach,
-  merge
+  merge,
+  deepParse
 }
