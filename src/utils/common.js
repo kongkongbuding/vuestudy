@@ -219,6 +219,26 @@ const newSpace = (d, f) => {
   return d
 }
 
+// 深层 json 转换 (string to json)
+const deepParse = d => {
+  if (isArray(d)) {
+    for (var i = 0; d[i]; i++) d[i] = deepParse(d[i])
+    return d
+  }
+  if (isObject(d)) {
+    for (var p in d) d[p] = deepParse(d[p])
+    return d
+  }
+  if (isString(d)) {
+    try {
+      d = JSON.parse(d)
+    } catch (e) {}
+    if (isString(d)) return d
+    return deepParse(d)
+  } 
+  return d
+}
+
 // base64 转 FormData  使用 blob > ie9
 const base64ToFormData = base64String => {
   let bytes = window.atob(base64String.split(',')[1]),
@@ -254,21 +274,6 @@ const base64ToFormData = base64String => {
 //     let v = this.entries.next()
 //     if (!v.done) (this.data = v.value[1](this.data)), this.do()
 //   }
-// }
-
-// 修改微信title
-// const changeWxTitle = v => {
-//   let body = document.body
-//   document.title = v
-//   let iframe = document.createElement('iframe')
-//   iframe.src = '/favicon.ico'
-//   iframe
-//     .on('load', function() {
-//       setTimeout(function() {
-//         iframe.off('load').remove()
-//       }, 0)
-//     })
-//     .appendTo(body)
 // }
 
 // ${*} 替换  // 参考es6 字符串模板
@@ -391,25 +396,6 @@ const merge = () => {
   return ret
 }
 
-// string to json
-const deepParse = d => {
-  if (isArray(d)) {
-    for (var i = 0; d[i]; i++) d[i] = deepParse(d[i])
-    return d
-  }
-  if (isObject(d)) {
-    for (var p in d) d[p] = deepParse(d[p])
-    return d
-  }
-  if (isString(d)) {
-    try {
-      d = JSON.parse(d)
-    } catch (e) {}
-    if (isString(d)) return d
-    return deepParse(d)
-  } 
-  return d
-}
 
 export default {
   isString,
@@ -449,6 +435,7 @@ export default {
   latlngFmt,
   latlngToString,
   newSpace,
+  deepParse,
   // rank: new Rank(),
   base64ToFormData,
   // changeWxTitle,
@@ -461,6 +448,5 @@ export default {
   sort,
   noop,
   forEach,
-  merge,
-  deepParse
+  merge
 }
