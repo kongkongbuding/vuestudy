@@ -155,7 +155,7 @@ const toAbsNum = v => {
     .replace(/\./g, '')
     .replace('$#$', '.')
   if (v == '') v = 0
-  return v
+  return +v
 }
 
 // webapi 时间格式化
