@@ -26,7 +26,7 @@ const checkCross = (p1, p2, p3, p4) => {
 }
 
 // point in area 奇内 偶外
-const hitArea = (point, polygon) => {
+const hitAreaOld = (point, polygon) => {
   let p1 = point,
     p2 = { x: -100, y: point.y },
     p3,
@@ -44,6 +44,18 @@ const hitArea = (point, polygon) => {
   if (checkCross(p1, p2, p3, p4)) count++
 
   return count % 2 == 0 ? false : true
+}
+
+const hitArea = (point, polygon) => {   
+  let x = point[0], y = point[1]
+  let inside = false
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {  
+      let xi = polygon[i][0], yi = polygon[i][1]
+      let xj = polygon[j][0], yj = polygon[j][1]
+      let intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
+      if (intersect) inside = !inside
+  }  
+  return inside
 }
 
 /**

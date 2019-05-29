@@ -154,7 +154,7 @@ const toAbsNum = v => {
     .replace('.', '$#$')
     .replace(/\./g, '')
     .replace('$#$', '.')
-  if (v == '') v = 0
+  if (v === '') v = 0
   return +v
 }
 
