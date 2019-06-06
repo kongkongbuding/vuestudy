@@ -1,11 +1,11 @@
 /* eslint-disable */
 
 /*
- * common 
+ * common
  * @ cll1
  */
 
-const O = Object.prototype.toString 
+const O = Object.prototype.toString
 const UA = navigator.userAgent
 
 // 字符串
@@ -42,7 +42,7 @@ const isBuffer = v =>
   typeof v.readUInt8 === 'function'
 
 // isFormData
-const isFormData = v => (typeof FormData !== 'undefined') && (v instanceof FormData)
+const isFormData = v => typeof FormData !== 'undefined' && v instanceof FormData
 
 // 手机
 const isPhone = v => /^0*1\d{10}$/.test(v)
@@ -235,7 +235,7 @@ const deepParse = d => {
     } catch (e) {}
     if (isString(d)) return d
     return deepParse(d)
-  } 
+  }
   return d
 }
 
@@ -356,9 +356,49 @@ const sort = (v, { order = 'asc', by }) => {
   })
   return v
 }
+// 归并排序
+const mergeSort = function(arr, order, by) {
+  var len = arr.length
+  if (len < 2) {
+    return arr
+  }
+  var middle = Math.floor(len / 2),
+    left = arr.slice(0, middle),
+    right = arr.slice(middle)
+  return merge(
+    mergeSort(left, order, by),
+    mergeSort(right, order, by),
+    order,
+    by
+  )
+}
+
+function merge(left, right, order, by) {
+  var result = []
+
+  while (left.length && right.length) {
+    var l = left[0]
+    var r = right[0]
+    if (by !== void 0) {
+      l = l[by]
+      r = r[by]
+    }
+    if ((order && l <= r) || (!order && l >= r)) {
+      result.push(left.shift())
+    } else {
+      result.push(right.shift())
+    }
+  }
+
+  while (left.length) result.push(left.shift())
+
+  while (right.length) result.push(right.shift())
+
+  return result
+}
 
 // 空函数
-const noop = function () {}
+const noop = function() {}
 
 // 循环
 function forEach(obj, fn) {
@@ -368,14 +408,14 @@ function forEach(obj, fn) {
 
   if (isArray(obj)) {
     for (var i = 0, l = obj.length; i < l; i++) {
-      fn.call(null, obj[i], i, obj);
+      fn.call(null, obj[i], i, obj)
     }
     return
   }
 
   for (var key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      fn.call(null, obj[key], key, obj);
+      fn.call(null, obj[key], key, obj)
     }
   }
 }
@@ -383,19 +423,18 @@ function forEach(obj, fn) {
 // 混入
 const merge = () => {
   let ret = {}
-  function assignValue (val, key) {
+  function assignValue(val, key) {
     if (typeof ret[key] === 'object' && typeof val === 'object') {
-      ret[key] = merge(ret[key], val);
+      ret[key] = merge(ret[key], val)
     } else {
-      ret[key] = val;
+      ret[key] = val
     }
   }
   for (let i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue);
+    forEach(arguments[i], assignValue)
   }
   return ret
 }
-
 
 export default {
   isString,
@@ -446,6 +485,7 @@ export default {
   encode,
   decode,
   sort,
+  mergeSort,
   noop,
   forEach,
   merge
