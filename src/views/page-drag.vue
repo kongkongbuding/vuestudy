@@ -16,6 +16,8 @@
 
 <script>
 import Dragable from 'cll-vue-components/lib/dragable'
+// import help from 'js-help'
+// console.log(help)
 export default {
   components: {
     Dragable

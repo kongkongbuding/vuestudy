@@ -116,6 +116,34 @@ export default new Router({
         keepAlive: false,
         requiresAuth: true
       }
+    },
+    {
+      path: '/nodejs',
+      name: 'nodejs',
+      component: res => require(['@/views/nodejs/index.vue'], res),
+      props: {
+        msg: 'nodejs_study'
+      },
+      children: [
+        {
+          path: 'login',
+          components: {
+            login: resolve => require(['@/views/nodejs/login.vue'], resolve)
+          }
+        },
+        {
+          path: 'register',
+          components: {
+            register: resolve => require(['@/views/nodejs/register.vue'], resolve)
+          }
+        },
+        {
+          path: 'main',
+          components: {
+            main: resolve => require(['@/views/nodejs/main.vue'], resolve)
+          }
+        }
+      ]
     }
   ]
 })

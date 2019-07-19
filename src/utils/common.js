@@ -365,7 +365,7 @@ const mergeSort = function(arr, order, by) {
   var middle = Math.floor(len / 2),
     left = arr.slice(0, middle),
     right = arr.slice(middle)
-  return merge(
+  return mergeValue(
     mergeSort(left, order, by),
     mergeSort(right, order, by),
     order,
@@ -373,7 +373,7 @@ const mergeSort = function(arr, order, by) {
   )
 }
 
-function merge(left, right, order, by) {
+function mergeValue(left, right, order, by) {
   var result = []
 
   while (left.length && right.length) {

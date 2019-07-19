@@ -2,13 +2,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import A from './s1'
 import B from './s2'
+import login from './login'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     a: A,
-    b: B
+    b: B,
+    login: login
   },
   state: {
     index: 1
