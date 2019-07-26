@@ -144,6 +144,11 @@ export default new Router({
           }
         }
       ]
+    },
+    {
+      path: '/audio',
+      name: 'audio',
+      component: res => require(['@/views/audio/main.vue'], res)
     }
   ]
 })
