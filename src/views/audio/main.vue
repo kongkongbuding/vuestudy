@@ -55,6 +55,7 @@
       <span>创建音频</span>
       <button @click="createOscillator" >空白音调</button>
       <button @click="recording" >录音</button>
+      <button @click="stopRecording" >停止录音</button>
     </div>
   </div>
 </template>
@@ -72,10 +73,13 @@ export default {
       accept: '.mp3,.ogg,.flac',
       audioContext: null,
       gainNode: null,
+      biquadFilter: null,
       panner: null,
       panner3d: null,
       audioBuffer: null,
       sourceNode: null,
+      stream: null,
+      mediaRecorder: null,
       analyserNode: null,
       javascriptNode: null,
       audioData: null,
@@ -105,6 +109,7 @@ export default {
       let audioContext = new AudioContext()
       let destination = audioContext.destination
       let gainNode = audioContext.createGain()
+      let biquadFilter = audioContext.createBiquadFilter()
       let panner = new StereoPannerNode(audioContext, { pan: 0 })
       let panner3d = audioContext.createPanner()
       let analyserNode = audioContext.createAnalyser()
@@ -112,6 +117,7 @@ export default {
       let javascriptNode = audioContext.createScriptProcessor(analyserNode.frequencyBinCount, 1, 1)
 
       gainNode.connect(panner).connect(destination)
+      biquadFilter.connect(panner).connect(destination)
       panner3d.connect(destination)
       analyserNode.connect(javascriptNode).connect(destination)
       javascriptNode.onaudioprocess = audioProcessingEvent => {
@@ -140,6 +146,7 @@ export default {
 
       this.audioContext = audioContext
       this.gainNode = gainNode
+      this.biquadFilter = biquadFilter
       this.panner = panner
       this.panner3d = panner3d
       this.analyserNode = analyserNode
@@ -158,7 +165,8 @@ export default {
       reader.onload = () => {
         this.audioContext.decodeAudioData(reader.result, buffer => {
           this.audioData = buffer
-          this.audioPlaying && this.sourceNode && this.sourceNode.stop()
+          // this.audioPlaying && this.sourceNode && this.sourceNode.stop()
+          this.destructionSourceNode()
 
           console.log('加载完成!')
           let { audioData, audioContext, gainNode, analyserNode } = this // , gainNode, analyserNode
@@ -174,7 +182,6 @@ export default {
           sourceNode.start(0)
 
           this.sourceNode = sourceNode
-          this.audioPlaying = true
 
           // let sourceNodeCopy = audioContext.createBufferSource()
           // sourceNodeCopy.connect(gainNode)
@@ -194,9 +201,16 @@ export default {
     stop: function () {
       this.audioContext.suspend()
     },
+    destructionSourceNode: function () {
+      if (this.audioPlaying && this.sourceNode && this.sourceNode.stop) {
+        this.sourceNode.stop()
+        this.sourceNode = null
+      }
+    },
     changeVolume: function (e) {
       let value = e.target.value
       this.gainNode.gain.setValueAtTime(value, this.audioContext.currentTime)
+      this.biquadFilter.gain.setValueAtTime(value, this.audioContext.currentTime)
       // this.gainNode.gain.linearRampToValueAtTime(value, this.audioContext.currentTime + 2)
       // this.gainNode.gain.exponentialRampToValueAtTime(value, this.audioContext.currentTime + 2)
       // this.gainNode.gain.setTargetAtTime(value, this.audioContext.currentTime + 1, 0.5)
@@ -261,19 +275,54 @@ export default {
       }
     },
     recording: function () {
-      console.log(navigator)
+      this.destructionSourceNode()
+      this.stopRecording()
+      let { audioContext, biquadFilter, analyserNode } = this // gainNode
+      biquadFilter.type = 'lowshelf'
+      biquadFilter.frequency.value = 1000
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          let sourceNode = audioContext.createMediaStreamSource(stream)
+          sourceNode.connect(analyserNode)
+          sourceNode.connect(biquadFilter)
+          this.sourceNode = sourceNode
+          this.audioPlaying = true
+          this.stream = stream
+          this.play()
+
+          this.createMediaRecorder(stream)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    createMediaRecorder: function (stream) {
+      let mediaRecorder = new MediaRecorder(stream)
+      let data = []
+      mediaRecorder.start()
+      mediaRecorder.ondataavailable = evt => {
+        data.push(evt.data)
+      }
+      mediaRecorder.onstop = evt => {
+        let blob = new Blob(data, { type: 'audio/ogg; codecs=opus' })
+        let audioTag = document.createElement('audio')
+        audioTag.controls = true
+        document.getElementById('app').appendChild(audioTag)
+        audioTag.src = URL.createObjectURL(blob)
+      }
+      this.mediaRecorder = mediaRecorder
+    },
+    stopRecording: function () {
+      let { stream, mediaRecorder } = this
+      if (stream) {
+        stream.getTracks()[0].stop()
+        if (mediaRecorder) {
+          mediaRecorder.stop()
+        }
+      }
     }
   },
   watch: {
-    panner3dX: function () {
-      this.setPanner3dX()
-    },
-    panner3dY: function () {
-      this.setPanner3dX()
-    },
-    panner3dZ: function () {
-      this.setPanner3dX()
-    },
     panner3dPosition: {
       handler: function () {
         this.setPanner3dX()
