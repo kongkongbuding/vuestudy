@@ -62,7 +62,7 @@
       <button @click="buildToneArray" >创建音调</button>
       <button @click="playPainoMusic('xxx')">小星星</button>
       <button @click="playPainoMusic('zdqc')">纸短情长</button>
-      <button @click="playPainoMusic('tkzc')">天空之城</button>
+      <button @click="playPainoMusic('tkzc')">天空之城高</button>
       <button @click="playPainoMusic('tkzcd')">天空之城低</button>
       <div class="paino" :toneNum='toneNum' @mousedown="painoState = 1">
         <div class="painoKey" @mousedown="clickPainoKey(v, 1)" @mouseenter="clickPainoKey(v)" v-for="(v, i) in painoKey" :doClick="painoActive == v ? 'true' : 'false'" :overbuild="tone[v] ? 'true' : 'false'" :key="'painoKey' + i">{{v}}</div>
