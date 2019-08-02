@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main" @mouseup="painoState = 0">
     <h3>audio</h3>
     <canvas id="canvas" ref="canvas" :width="cW" :height="cH" ></canvas>
     <div>
@@ -57,6 +57,16 @@
       <button @click="recording" >录音</button>
       <button @click="stopRecording" >停止录音</button>
     </div>
+    <div>
+      <span>钢琴</span>
+      <button @click="buildToneArray" >创建音调</button>
+      <button @click="playPainoMusic('xxx')">小星星</button>
+      <button @click="playPainoMusic('zdqc')">纸短情长</button>
+      <button @click="playPainoMusic('tkzc')">天空之城</button>
+      <div class="paino" :toneNum='toneNum' @mousedown="painoState = 1">
+        <div class="painoKey" @mousedown="clickPainoKey(v, 1)" @mouseenter="clickPainoKey(v)" v-for="(v, i) in painoKey" :doClick="painoActive == v ? 'true' : 'false'" :overbuild="tone[v] ? 'true' : 'false'" :key="'painoKey' + i">{{v}}</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -66,6 +76,21 @@ import './polyfill.js'
 
 const cW = 512
 const cH = 256
+const currentColor = [
+  [255, 0, 0],
+  [255, 255, 0],
+  [0, 255, 0],
+  [0, 255, 255],
+  [0, 0, 255],
+  [255, 0, 255]
+]
+const duration = 2
+const keyTime = 300
+const music = {
+  xxx: '1 1 5 5 6 6 5 - 4 4 3 3 2 2 1 - 5 5 4 4 3 3 2 - 5 5 4 4 3 3 2 - 1 1 5 5 6 6 5 - 4 4 3 3 2 2 1 - -',
+  zdqc: '1 1 2 3 3 2 3 - 3 2 1 5 5 3 5 - 5 6 7 1_ 1_ 1_ 1_ 1_ 7 6 7 6 3 5 - 5 6 1_ 5 6 - 6 5 3 5 3 2 1 - 1 1 3 2 2 1 2 5 2',
+  tkzc: '- - 6 7 1_ - - 7 1_ - 3_ - 7 - - - - - 3 - 6 - - 5 6 - 1_ - 5 - - - - - 4 3 4 - - 3 4 - 1_ - 3 - - 0 - 1_ 1_ 1_ 7 - - 5 5 - 7 - 7 - - - - - 6 7 1_ - - 7 1_ - 3_ - 7 - - - - - 3 3 6 - -  5 6 - 1_ - 5 - - - - - 3 - 4 - 1_ 7 - - 1_ - 2_ - 3_ 1_ - - - 0 1_ 7 6 - 7 - 6 - 6 - - - - - 1_ 2_ 3_ - - 2_ 3_ - 5_ - 2_ - - - - - 5 5 1_ - - 7 1_ - 3_ - 3_ - - - - - - - 6 7 1_ - 7 1_ 2_ - 1_ - - 5 5 - - - 4_ - 3_ - 2_ - 1_ - 3_ - - - - - - - 3_ - - - 0 - 3_ - 6_ - - - 5_ - - - 3_ - 2_ 1_ - - - 0 2_ - 1_ 2_ - - 5_ - 3_ - - - - - 3_ - 6_ - - - 5_ - - - 3_ - 2_ 1_ - - - 0 2_ - 1_ 2_ - - 7 - 6 - - - - - 6 7 6 - - -'
+}
 
 export default {
   data () {
@@ -91,7 +116,14 @@ export default {
       panner3dPosition: [0, 0, 0],
       panner3dX: 0,
       panner3dY: 0,
-      panner3dZ: 0
+      panner3dZ: 0,
+      painoKey: ['_1', '_2', '_3', '_4', '_5', '_6', '_7', '1', '2', '3', '4', '5', '6', '7', '1_', '2_', '3_', '4_', '5_', '6_', '7_'],
+      painoferq: [262, 294, 330, 349, 392, 440, 494, 523, 587, 659, 698, 784, 880, 988, 1047, 1175, 1319, 1397, 1568, 1760, 1967],
+      tone: {},
+      toneNum: 0,
+      painoState: 0,
+      painoActiveTimer: null,
+      painoActive: null
     }
   },
   mounted () {
@@ -125,16 +157,19 @@ export default {
         analyserNode.getByteFrequencyData(amplitudeArray)
         if (this.audioPlaying) {
           window.requestAnimFrame(() => {
+            let ct = audioContext.currentTime
+            let ct0 = ct / 2
+            let ct1 = ct0 + 1
             let { ctx } = this
             ctx.strokeStyle = '#000000'
             let grad = ctx.createLinearGradient(0, 0, 0, cH)
-            grad.addColorStop(0, 'rgba(255, 0, 0, 0.8)')
-            grad.addColorStop(1, 'rgba(255, 255, 0, 0.8)')
+            grad.addColorStop(0, 'rgba(' + this.getCurrentTimeColor(ct0) + ', 0.8)')
+            grad.addColorStop(1, 'rgba(' + this.getCurrentTimeColor(ct1) + ', 0.8)')
             ctx.fillStyle = grad
             ctx.clearRect(0, 0, cW, cH)
             ctx.beginPath()
             for (let i = 0; i < amplitudeArray.length; i++) {
-              let y = cH - amplitudeArray[i] - 1
+              let y = cH - amplitudeArray[i]
               ctx[i ? 'lineTo' : 'moveTo'](i, y)
             }
             ctx.lineTo(amplitudeArray.length - 1, cH)
@@ -152,6 +187,7 @@ export default {
       this.analyserNode = analyserNode
       this.amplitudeArray = amplitudeArray
       this.javascriptNode = javascriptNode
+      this.play()
     },
     fileChange: function (v) {
       let file = v.target.files[0]
@@ -165,15 +201,12 @@ export default {
       reader.onload = () => {
         this.audioContext.decodeAudioData(reader.result, buffer => {
           this.audioData = buffer
-          // this.audioPlaying && this.sourceNode && this.sourceNode.stop()
           this.destructionSourceNode()
 
-          console.log('加载完成!')
-          let { audioData, audioContext, gainNode, analyserNode } = this // , gainNode, analyserNode
+          let { audioData, audioContext, gainNode, analyserNode } = this
           if (!audioData) return
           let sourceNode = audioContext.createBufferSource()
 
-          // sourceNode.connect(audioContext.destination)
           sourceNode.connect(analyserNode)
           sourceNode.connect(gainNode)
 
@@ -253,26 +286,14 @@ export default {
       let { audioContext } = this
       let osc = audioContext.createOscillator()
       let dest = audioContext.createMediaStreamDestination()
-      let mediaRecorder = new MediaRecorder(dest.stream)
+      this.createMediaRecorder(dest.stream)
       osc.connect(dest)
-      mediaRecorder.start()
       osc.start(0)
       setTimeout(() => {
         // mediaRecorder.requestData()
-        mediaRecorder.stop()
+        this.stopRecording()
         osc.stop(0)
       }, 1000)
-      let data = []
-      mediaRecorder.ondataavailable = evt => {
-        data.push(evt.data)
-      }
-      mediaRecorder.onstop = evt => {
-        let blob = new Blob(data, { type: 'audio/ogg; codecs=opus' })
-        let audioTag = document.createElement('audio')
-        audioTag.controls = true
-        document.getElementById('app').appendChild(audioTag)
-        audioTag.src = URL.createObjectURL(blob)
-      }
     },
     recording: function () {
       this.destructionSourceNode()
@@ -287,7 +308,6 @@ export default {
           sourceNode.connect(biquadFilter)
           this.sourceNode = sourceNode
           this.audioPlaying = true
-          this.stream = stream
           this.play()
 
           this.createMediaRecorder(stream)
@@ -296,7 +316,7 @@ export default {
           console.log(err)
         })
     },
-    createMediaRecorder: function (stream) {
+    createMediaRecorder: function (stream, useBuffer, callBack) {
       let mediaRecorder = new MediaRecorder(stream)
       let data = []
       mediaRecorder.start()
@@ -305,21 +325,106 @@ export default {
       }
       mediaRecorder.onstop = evt => {
         let blob = new Blob(data, { type: 'audio/ogg; codecs=opus' })
-        let audioTag = document.createElement('audio')
-        audioTag.controls = true
-        document.getElementById('app').appendChild(audioTag)
-        audioTag.src = URL.createObjectURL(blob)
-      }
-      this.mediaRecorder = mediaRecorder
-    },
-    stopRecording: function () {
-      let { stream, mediaRecorder } = this
-      if (stream) {
-        stream.getTracks()[0].stop()
-        if (mediaRecorder) {
-          mediaRecorder.stop()
+        if (useBuffer) {
+          let f = new FileReader()
+          f.readAsArrayBuffer(blob)
+          f.onload = () => {
+            this.audioContext.decodeAudioData(f.result, buffer => {
+              callBack && callBack(buffer)
+            })
+          }
+        } else {
+          let audioTag = document.createElement('audio')
+          audioTag.controls = true
+          document.getElementById('app').appendChild(audioTag)
+          audioTag.src = URL.createObjectURL(blob)
         }
       }
+      this.mediaRecorder = mediaRecorder
+      return mediaRecorder
+    },
+    stopRecording: function (mediaRecorder) {
+      if (!mediaRecorder) mediaRecorder = this.mediaRecorder
+      let stream = mediaRecorder.stream
+      if (!mediaRecorder) return
+      if (stream) {
+        stream.getTracks()[0].stop()
+        // mediaRecorder.requestData()
+        mediaRecorder.stop()
+        this.stream = null
+        this.mediaRecorder = null
+      }
+    },
+    buildToneArray: function () {
+      this.painoKey.map((v, i) => {
+        let frequency = this.painoferq[i]
+        frequency && this.buildTone(frequency, v)
+      })
+    },
+    buildTone: function (frequency, key) {
+      let { audioContext } = this
+      let ct = audioContext.currentTime
+      let oscillator = audioContext.createOscillator()
+      let dest = audioContext.createMediaStreamDestination()
+      let gainNode = audioContext.createGain()
+      let mediaRecorder = this.createMediaRecorder(dest.stream, true, buffer => {
+        this.tone[key] = buffer
+        this.toneNum++
+      })
+
+      oscillator.connect(gainNode).connect(dest)
+      // oscillator.type = 'square'
+      oscillator.frequency.value = frequency
+      oscillator.start(ct)
+      gainNode.gain.setValueAtTime(0, ct)
+      gainNode.gain.linearRampToValueAtTime(1, ct + 0.01)
+      gainNode.gain.exponentialRampToValueAtTime(0.001, ct + duration)
+
+      setTimeout(() => {
+        this.stopRecording(mediaRecorder)
+        oscillator.stop(ct + duration)
+      }, duration * 1000)
+    },
+    clickPainoKey: function (v, mousedown) {
+      let { tone, audioContext, gainNode, painoState, analyserNode } = this
+      if (!tone[v] || (!painoState && !mousedown)) return
+      this.setPainoActive(v)
+      let sourceNode = audioContext.createBufferSource()
+
+      sourceNode.connect(analyserNode)
+      sourceNode.connect(gainNode)
+      sourceNode.buffer = tone[v]
+      sourceNode.start(0)
+
+      this.audioPlaying = true
+    },
+    playPainoMusic: function (key) {
+      let sond = music[key]
+      if (!sond) return
+      sond = sond.split(' ')
+      let play = i => {
+        if (i >= sond.length) return
+        let v = sond[i]
+        this.clickPainoKey(v, 1)
+        i++
+        setTimeout(() => {
+          play(i)
+        }, keyTime)
+      }
+      play(0)
+    },
+    setPainoActive: function (v) {
+      clearTimeout(this.painoActiveTimer)
+      this.painoActive = v
+      this.painoActiveTimer = setTimeout(() => {
+        this.painoActive = null
+      }, keyTime)
+    },
+    getCurrentTimeColor: function (v) {
+      let a = currentColor[Math.floor(v % 6)]
+      let b = currentColor[Math.floor((v + 1) % 6)]
+      let c = v % 1
+      return [a[0] + (b[0] - a[0]) * c, a[1] + (b[1] - a[1]) * c, a[2] + (b[2] - a[2]) * c].join(',')
     }
   },
   watch: {
@@ -337,8 +442,22 @@ export default {
 .main {
   padding: 0;
   margin: 0;
+  * {
+    box-sizing: border-box; -ms-box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
+    user-select: none; -ms-user-select: none; -moz-user-select: none; -webkit-user-select: none;
+  }
   div {
-    margin: 10px;
+    margin: 10px 0;
+  }
+  .paino {
+    text-align: center; margin: 0 auto; width: 630px;
+    .painoKey {
+      float: left; width: 30px; height: 50px; background: #cecece; line-height: 70px; border: 1px solid #cecece;
+      &[overbuild=true] {
+        background: #fff; cursor: pointer;
+        &[doClick=true] { background: #ecfdee; }
+      }
+    }
   }
 }
 </style>
