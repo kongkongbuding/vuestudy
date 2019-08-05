@@ -58,6 +58,11 @@
       <button @click="stopRecording" >停止录音</button>
     </div>
     <div>
+      <span>创建视频</span>
+      <button @click="recordVideo" >录屏</button>
+      <button @click="stopRecordVideo" >停止录屏</button>
+    </div>
+    <div>
       <span>钢琴</span>
       <button @click="buildToneArray" >创建音调</button>
       <button @click="playPainoMusic('xxx')">小星星</button>
@@ -236,6 +241,33 @@ export default {
     stop: function () {
       this.audioContext.suspend()
     },
+    createMediaRecorder: function (stream, useBuffer, callBack) {
+      let mediaRecorder = new MediaRecorder(stream)
+      let data = []
+      mediaRecorder.start()
+      mediaRecorder.ondataavailable = evt => {
+        data.push(evt.data)
+      }
+      mediaRecorder.onstop = evt => {
+        let blob = new Blob(data, { type: 'audio/ogg; codecs=opus' })
+        if (useBuffer) {
+          let f = new FileReader()
+          f.readAsArrayBuffer(blob)
+          f.onload = () => {
+            this.audioContext.decodeAudioData(f.result, buffer => {
+              callBack && callBack(buffer)
+            })
+          }
+        } else {
+          let audioTag = document.createElement('audio')
+          audioTag.controls = true
+          document.getElementById('app').appendChild(audioTag)
+          audioTag.src = URL.createObjectURL(blob)
+        }
+      }
+      this.mediaRecorder = mediaRecorder
+      return mediaRecorder
+    },
     destructionSourceNode: function () {
       if (this.audioPlaying && this.sourceNode && this.sourceNode.stop) {
         this.sourceNode.stop()
@@ -318,35 +350,9 @@ export default {
           console.log(err)
         })
     },
-    createMediaRecorder: function (stream, useBuffer, callBack) {
-      let mediaRecorder = new MediaRecorder(stream)
-      let data = []
-      mediaRecorder.start()
-      mediaRecorder.ondataavailable = evt => {
-        data.push(evt.data)
-      }
-      mediaRecorder.onstop = evt => {
-        let blob = new Blob(data, { type: 'audio/ogg; codecs=opus' })
-        if (useBuffer) {
-          let f = new FileReader()
-          f.readAsArrayBuffer(blob)
-          f.onload = () => {
-            this.audioContext.decodeAudioData(f.result, buffer => {
-              callBack && callBack(buffer)
-            })
-          }
-        } else {
-          let audioTag = document.createElement('audio')
-          audioTag.controls = true
-          document.getElementById('app').appendChild(audioTag)
-          audioTag.src = URL.createObjectURL(blob)
-        }
-      }
-      this.mediaRecorder = mediaRecorder
-      return mediaRecorder
-    },
     stopRecording: function (mediaRecorder) {
       if (!mediaRecorder) mediaRecorder = this.mediaRecorder
+      if (!mediaRecorder) return
       let stream = mediaRecorder.stream
       if (!mediaRecorder) return
       if (stream) {
@@ -356,6 +362,60 @@ export default {
         this.stream = null
         this.mediaRecorder = null
       }
+    },
+    recordVideo: function () {
+      this.destructionSourceNode()
+      let { audioContext, analyserNode } = this // , biquadFilter
+      // biquadFilter.type = 'lowshelf'
+      // biquadFilter.frequency.value = 1000
+      navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+        .then(stream => {
+          let video = document.createElement('video')
+          video.controls = true
+          video.id = 'recordVideo'
+          document.body.appendChild(video)
+          video.srcObject = stream
+          // video.volume = 1
+          video.onloadedmetadata = function (e) {
+            video.play()
+            video.volume = 0.5
+            // video.muted = true
+          }
+
+          let sourceNode = audioContext.createMediaStreamSource(stream)
+          sourceNode.connect(analyserNode)
+          // sourceNode.connect(biquadFilter)
+          // this.sourceNode = sourceNode
+          this.audioPlaying = true
+          this.play()
+
+          let mediaRecorder = new MediaRecorder(stream)
+          let data = []
+          mediaRecorder.start()
+          mediaRecorder.ondataavailable = evt => {
+            data.push(evt.data)
+          }
+          mediaRecorder.onstop = evt => {
+            let blob = new Blob(data, { type: 'video/x-matroska;codecs=avc1,opus' })
+            let videoTag = document.createElement('video')
+            videoTag.controls = true
+            document.getElementById('app').appendChild(videoTag)
+            videoTag.src = URL.createObjectURL(blob)
+          }
+          this.mediaRecorder = mediaRecorder
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    stopRecordVideo: function () {
+      let { mediaRecorder } = this
+      if (!mediaRecorder) return
+      let stream = mediaRecorder.stream
+      stream.getTracks()[0].stop()
+      mediaRecorder.stop()
+      let videoDom = document.getElementById('recordVideo')
+      videoDom && videoDom.parentNode.removeChild(videoDom)
     },
     buildToneArray: function () {
       this.painoKey.map((v, i) => {
