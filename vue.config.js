@@ -3,6 +3,7 @@ const path = require('path')
 module.exports = {
   // 基本路径
   baseUrl: process.env.NODE_ENV === 'production' ? '' : '/',
+  runtimeCompiler: true,
   // webpack配置
   chainWebpack: config => {
     // 设置静态目录别名

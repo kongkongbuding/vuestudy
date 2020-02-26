@@ -14,6 +14,13 @@ import Message from 'cll-vue-components/plugins/message'
 import Ztree from 'cll-vue-components/plugins/ztree'
 import DatePicker from 'cll-vue-components/plugins/datePicker'
 
+import 'vx-easyui/dist/themes/default/easyui.css'
+import 'vx-easyui/dist/themes/icon.css'
+import 'vx-easyui/dist/themes/vue.css'
+import EasyUI from 'vx-easyui'
+
+Vue.use(EasyUI)
+
 Vue.use(Tooltip)
 Vue.use(Loading, { skin: 'pc' })
 Vue.use(Badge)

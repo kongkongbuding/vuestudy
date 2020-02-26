@@ -21,10 +21,14 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "mockjs": "^1.0.1-beta3",
+    "model3d": "^1.0.4",
     "moment": "^2.22.2",
+    "three": "^0.111.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vx-easyui": "^1.2.4",
+    "xlsx": "^0.15.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",

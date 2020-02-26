@@ -9,6 +9,16 @@
           没有内容
           <div class="drag" alowdrag ></div>
         </div>
+        <div>
+          <DataGrid :data="data" style="height:250px">
+            <GridColumn field="itemid" title="Item ID"></GridColumn>
+            <GridColumn field="name" title="Name"></GridColumn>
+            <GridColumn field="listprice" title="List Price" align="right"></GridColumn>
+            <GridColumn field="unitcost" title="Unit Cost" align="right"></GridColumn>
+            <GridColumn field="attr" title="Attribute" width="30%"></GridColumn>
+            <GridColumn field="status" title="Status" align="center"></GridColumn>
+          </DataGrid>
+        </div>
       </div>
     </dragable>
   </div>
@@ -25,7 +35,18 @@ export default {
   data () {
     return {
       left: 100,
-      top: 200
+      top: 200,
+      data: [
+        {
+          code: 'FI-SW-01',
+          name: 'Koi',
+          unitcost: 10.00,
+          status: 'P',
+          listprice: 36.50,
+          attr: 'Large',
+          itemid: 'EST-1'
+        }
+      ]
     }
   }
 }

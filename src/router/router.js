@@ -149,6 +149,16 @@ export default new Router({
       path: '/audio',
       name: 'audio',
       component: res => require(['@/views/audio/main.vue'], res)
+    },
+    {
+      path: '/algorithm',
+      name: 'algorithm',
+      component: res => require(['@/views/algorithm/v1.vue'], res)
+    },
+    {
+      path: '/three',
+      name: 'three',
+      component: res => require(['@/views/three.vue'], res)
     }
   ]
 })
