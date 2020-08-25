@@ -159,6 +159,56 @@ export default new Router({
       path: '/three',
       name: 'three',
       component: res => require(['@/views/three.vue'], res)
+    },
+    {
+      path: '/colorpicker',
+      name: 'colorpicker',
+      component: res => require(['@/views/page-color-picker.vue'], res)
+    },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: res => require(['@/views/page-upload.vue'], res)
+    },
+    {
+      path: '/download',
+      name: 'page-download',
+      component: res => require(['@/views/page-download.vue'], res)
+    },
+    {
+      path: '/badge',
+      name: '徽标',
+      component: res => require(['@/views/page-badge.vue'], res)
+    },
+    {
+      path: '/message',
+      name: '提示信息',
+      component: res => require(['@/views/page-message.vue'], res)
+    },
+    {
+      path: '/step',
+      name: 'page-step',
+      component: res => require(['@/views/page-step.vue'], res)
+    },
+    {
+      path: '/pagination',
+      name: 'page-pagination',
+      component: res => require(['@/views/page-pagination.vue'], res)
+    },
+    {
+      path: '/navtree',
+      name: 'page-nav-tree',
+      component: res => require(['@/views/page-nav-tree.vue'], res)
+    },
+    {
+      path: '/player',
+      name: 'page-player',
+      component: res => require(['@/views/page-player.vue'], res)
+    },
+    {
+      path: '/button',
+      name: 'page-button',
+      component: res => require(['@/views/page-button.vue'], res)
     }
   ]
 })

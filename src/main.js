@@ -13,6 +13,7 @@ import Badge from 'cll-vue-components/plugins/badge'
 import Message from 'cll-vue-components/plugins/message'
 import Ztree from 'cll-vue-components/plugins/ztree'
 import DatePicker from 'cll-vue-components/plugins/datePicker'
+import Download from 'cll-vue-components/plugins/download'
 
 import 'vx-easyui/dist/themes/default/easyui.css'
 import 'vx-easyui/dist/themes/icon.css'
@@ -27,6 +28,7 @@ Vue.use(Badge)
 Vue.use(Message)
 Vue.use(Ztree)
 Vue.use(DatePicker)
+Vue.use(Download)
 // Vue.component(Button.name, Button)
 // Vue.component(DatePicker.name, DatePicker)
 
