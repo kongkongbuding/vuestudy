@@ -35,7 +35,7 @@ export default {
         title: '标题',
         message: '内容',
         callback: () => this.$message.info('确定', 2),
-        cancle: () => this.$message.info('取消', 2)
+        cancel: () => this.$message.info('取消', 2)
       })
     }
   }

@@ -2,27 +2,27 @@
   <div class="colorPanel">
     <div :style="{background: color, height: '20px', width: '20px'}"></div>
     <div class="a cp">
-      <color-picker v-model="color" :predefineColors='predefineColors' />
+      <c-color-picker v-model="color" :predefineColors='predefineColors' />
     </div>
     <div class="b cp">
-      <color-picker v-model="color" :predefineColors='predefineColors' />
+      <c-color-picker v-model="color" :predefineColors='predefineColors' />
     </div>
     <div class="c cp">
-      <color-picker v-model="color" :predefineColors='predefineColors' />
+      <c-color-picker v-model="color" :predefineColors='predefineColors' />
     </div>
     <div class="d cp">
-      <color-picker v-model="color" :predefineColors='predefineColors' />
+      <c-color-picker v-model="color" :predefineColors='predefineColors' />
     </div>
   </div>
 </template>
 
 <script>
-import ColorPicker from 'cll-vue-components/lib/colorPicker'
+// import ColorPicker from 'cll-vue-components/lib/colorPicker'
 export default {
   name: 'pagepicker',
-  components: {
-    ColorPicker
-  },
+  // components: {
+  //   ColorPicker
+  // },
   data () {
     return {
       color: '#1290a3',

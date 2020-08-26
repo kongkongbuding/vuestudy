@@ -1,6 +1,6 @@
 <template>
   <div class="ppap">
-    <easy-img
+    <c-easy-img
       :int="int"
       theme="default"
       :d="d"
@@ -10,14 +10,14 @@
 </template>
 
 <script>
-import EasyImg from 'cll-vue-components/lib/easyImg'
+// import EasyImg from 'cll-vue-components/lib/easyImg'
 
 const radar = 'http://47.95.1.229:8069/webapi/api/v2/images/realtime-custom?category=radar/huanan&name=华南雷达拼图&time=[2018-12-13T07:59:24,2018-12-13T08:59:24]'
 
 export default {
-  components: {
-    EasyImg
-  },
+  // components: {
+  //   EasyImg
+  // },
   data () {
     return {
       int: 1,

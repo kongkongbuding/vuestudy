@@ -1,8 +1,8 @@
 <template>
   <div class="CalendarPanel">
-    <date-picker-calendar :marks='marks' color='#ffffff' backgroundColor='#26374f' size='16' rowHeight='50' :int='int' :change='change' :year='year' :month='month' :day='day' />
+    <c-date-picker-calendar :marks='marks' color='#ffffff' backgroundColor='#26374f' size='16' rowHeight='50' :int='int' :change='change' :year='year' :month='month' :day='day' />
     <div style="height: 20px;"></div>
-    <date-picker-calendar :marks='marks' size='16' rowHeight='50' :int='int' :change='change' :year='year' :month='month' :day='day' />
+    <c-date-picker-calendar :marks='marks' size='16' rowHeight='50' :int='int' :change='change' :year='year' :month='month' :day='day' />
   </div>
 </template>
 

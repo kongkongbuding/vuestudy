@@ -1,11 +1,11 @@
 <template>
   <div class="box">
-    <nav-tree :selectEvent="selectEvent" :d="d" :int="int" :current='current' />
+    <c-nav-tree :selectEvent="selectEvent" :d="d" :int="int" :current='current' />
   </div>
 </template>
 
 <script>
-import NavTree from 'cll-vue-components/lib/navTree'
+// import NavTree from 'cll-vue-components/lib/navTree'
 const treeData = [
   { id: '350100', name: '福州市', pid: '0' },
   { id: '350102', name: '鼓楼区', pid: '350100' },
@@ -215,7 +215,7 @@ export default {
     }
   },
   components: {
-    NavTree
+    // NavTree
   },
   mounted () {
     // console.log(treeData)

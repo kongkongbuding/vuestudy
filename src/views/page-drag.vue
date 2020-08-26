@@ -1,6 +1,6 @@
 <template>
   <div>
-    <dragable :top='top'>
+    <c-dragable :top='top'>
       <div class="boxing">
         <div class='title' alowdrag >
           <div class='closeBtn'></div>
@@ -10,28 +10,20 @@
           <div class="drag" alowdrag ></div>
         </div>
         <div>
-          <DataGrid :data="data" style="height:250px">
-            <GridColumn field="itemid" title="Item ID"></GridColumn>
-            <GridColumn field="name" title="Name"></GridColumn>
-            <GridColumn field="listprice" title="List Price" align="right"></GridColumn>
-            <GridColumn field="unitcost" title="Unit Cost" align="right"></GridColumn>
-            <GridColumn field="attr" title="Attribute" width="30%"></GridColumn>
-            <GridColumn field="status" title="Status" align="center"></GridColumn>
-          </DataGrid>
         </div>
       </div>
-    </dragable>
+    </c-dragable>
   </div>
 </template>
 
 <script>
-import Dragable from 'cll-vue-components/lib/dragable'
+// import Dragable from 'cll-vue-components/lib/dragable'
 // import help from 'js-help'
 // console.log(help)
 export default {
-  components: {
-    Dragable
-  },
+  // components: {
+  //   Dragable
+  // },
   data () {
     return {
       left: 100,

@@ -1,6 +1,6 @@
 <template>
   <div class="ppap">
-    <Player
+    <c-play-bar
       :int="int"
       theme="default"
       :d="d"
@@ -11,15 +11,14 @@
 </template>
 
 <script>
-// import Player from '../components/player/index.vue'
-import Player from 'cll-vue-components/lib/playBar'
+// import Player from 'cll-vue-components/lib/playBar'
 
 const radar = 'http://47.95.1.229:8069/webapi/api/v2/images/realtime-custom?category=radar/huanan&name=华南雷达拼图&time=[2018-12-11T04:59:24,2018-12-13T08:59:24]'
 const url = 'http://61.145.9.103:50053/WebApi/api/v1/images/realtime?category=Cloud%2F%E9%A3%8E%E4%BA%91%E4%BA%8C%E5%8F%B7%2F%E6%B0%B4%E6%B1%BD&time=%5B2019-07-14%2016%3A58%3A09%2C2019-07-15%2016%3A58%3A09%5D&desc=false'
 export default {
   name: 'tableTest',
   components: {
-    Player
+    // Player
   },
   data () {
     return {

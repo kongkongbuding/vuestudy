@@ -2,38 +2,38 @@
   <div class="buttonGroup">
       <div style="height: 40px; display: inline-block;">
         <div>
-          <btn @click="clickEvent">名称</btn>
-          <btn @click="clickEvent" type="primary">名称</btn>
-          <btn @click="clickEvent" type="success">名称</btn>
-          <btn @click="clickEvent" type="info">名称</btn>
-          <btn @click="clickEvent" type="warning">名称</btn>
-          <btn @click="clickEvent" type="danger">名称</btn>
+          <c-button @click="clickEvent">名称</c-button>
+          <c-button @click="clickEvent" type="primary">名称</c-button>
+          <c-button @click="clickEvent" type="success">名称</c-button>
+          <c-button @click="clickEvent" type="info">名称</c-button>
+          <c-button @click="clickEvent" type="warning">名称</c-button>
+          <c-button @click="clickEvent" type="danger">名称</c-button>
         </div>
         <div>
-          <btn @click="clickEvent" disabled>名称</btn>
-          <btn @click="clickEvent" disabled type="primary" :style="{borderRadius: '10px'}">名称</btn>
-          <btn @click="clickEvent" disabled type="success">名称</btn>
-          <btn @click="clickEvent" disabled type="info">名称</btn>
-          <btn @click="clickEvent" disabled type="warning">名称</btn>
-          <btn @click="clickEvent" disabled type="danger">名称</btn>
+          <c-button @click="clickEvent" disabled>名称</c-button>
+          <c-button @click="clickEvent" disabled type="primary" :style="{borderRadius: '10px'}">名称</c-button>
+          <c-button @click="clickEvent" disabled type="success">名称</c-button>
+          <c-button @click="clickEvent" disabled type="info">名称</c-button>
+          <c-button @click="clickEvent" disabled type="warning">名称</c-button>
+          <c-button @click="clickEvent" disabled type="danger">名称</c-button>
         </div>
         <div>
-          <btn @click="clickEvent" size="big" type="primary">名称</btn>
-          <btn @click="clickEvent" size="middle" type="primary">名称</btn>
-          <btn @click="clickEvent" size="small" type="primary">名称</btn>
+          <c-button @click="clickEvent" size="big" type="primary">名称</c-button>
+          <c-button @click="clickEvent" size="middle" type="primary">名称</c-button>
+          <c-button @click="clickEvent" size="small" type="primary">名称</c-button>
         </div>
       </div>
   </div>
 </template>
 
 <script>
-import Btn from 'cll-vue-components/lib/button'
+// import CButton from 'cll-vue-components/lib/button'
 
 export default {
   name: 'tableTest',
-  components: {
-    Btn
-  },
+  // components: {
+  //   CButton
+  // },
   data () {
     return {}
   },

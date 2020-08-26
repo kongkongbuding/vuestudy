@@ -1,10 +1,10 @@
 <template>
   <div class="datePanel">
     <div class="range">
-      <date-picker type="range" startDate="2018/12/31 12:12:13" endDate="2019/01/14 12:13:14" format="yyyy/MM/dd HH:mm:ss" :quickSelection='quickSelection' :change='timeChange' />
+      <c-date-picker type="range" startDate="2018/12/31 12:12:13" endDate="2019/01/14 12:13:14" format="yyyy/MM/dd HH:mm:ss" :quickSelection='quickSelection' :change='timeChange' />
     </div>
     <div class="dateTime">
-      <date-picker startDate="2018年12月30日 13:14" format="yyyy年MM月dd日 HH:mm" />
+      <c-date-picker startDate="2018年12月30日 13:14" format="yyyy年MM月dd日 HH:mm" />
     </div>
   </div>
 </template>

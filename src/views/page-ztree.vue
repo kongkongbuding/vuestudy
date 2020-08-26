@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class='boxing'>
-      <ztree :clickEvent="clickEvent" :selectEvent="selectEvent" :d="d" :int="int" select="true" />
+      <c-ztree :clickEvent="clickEvent" :selectEvent="selectEvent" :d="d" :int="int" select="true" />
     </div>
   </div>
 </template>

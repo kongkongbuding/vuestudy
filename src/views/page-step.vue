@@ -1,11 +1,11 @@
 <template>
   <div class="box">
-    <step :steps="steps" :step="step" height="70" width="800" :click="select" />
+    <c-step :steps="steps" :step="step" height="70" width="800" :click="select" />
   </div>
 </template>
 
 <script>
-import Step from 'cll-vue-components/lib/step'
+// import Step from 'cll-vue-components/lib/step'
 export default {
   data () {
     return {
@@ -20,7 +20,7 @@ export default {
     }
   },
   components: {
-    Step
+    // Step
   },
   methods: {
     select: function (v) {

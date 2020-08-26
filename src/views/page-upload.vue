@@ -1,11 +1,11 @@
 <template>
   <div class="box">
-    <upload :url="url" :headers="headers" :success="success" :error="error" multiple='true' />
+    <c-upload :url="url" :headers="headers" :success="success" :error="error" multiple='true' />
   </div>
 </template>
 
 <script>
-import Upload from 'cll-vue-components/lib/upload'
+// import Upload from 'cll-vue-components/lib/upload'
 export default {
   data () {
     return {
@@ -16,9 +16,9 @@ export default {
       }
     }
   },
-  components: {
-    Upload
-  },
+  // components: {
+  //   Upload
+  // },
   methods: {
     success: function (ret, list) {
       console.log(ret)

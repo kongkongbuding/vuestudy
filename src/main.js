@@ -7,30 +7,34 @@ import router from './router/router'
 import store from './store/store'
 import axios from 'axios-dev2'
 
-import Tooltip from 'cll-vue-components/plugins/tooltip'
-import Loading from 'cll-vue-components/plugins/loading'
-import Badge from 'cll-vue-components/plugins/badge'
-import Message from 'cll-vue-components/plugins/message'
-import Ztree from 'cll-vue-components/plugins/ztree'
-import DatePicker from 'cll-vue-components/plugins/datePicker'
-import Download from 'cll-vue-components/plugins/download'
+import CllVueComponents from 'cll-vue-components'
 
-import 'vx-easyui/dist/themes/default/easyui.css'
-import 'vx-easyui/dist/themes/icon.css'
-import 'vx-easyui/dist/themes/vue.css'
-import EasyUI from 'vx-easyui'
+Vue.use(CllVueComponents, {
+  loading: { skin: 'twopoints' }
+})
 
-Vue.use(EasyUI)
+// import Tooltip from 'cll-vue-components/plugins/tooltip'
+// import Loading from 'cll-vue-components/plugins/loading'
+// import Badge from 'cll-vue-components/plugins/badge'
+// import Message from 'cll-vue-components/plugins/message'
+// import Ztree from 'cll-vue-components/plugins/ztree'
+// import DatePicker from 'cll-vue-components/plugins/datePicker'
+// import Download from 'cll-vue-components/plugins/download'
 
-Vue.use(Tooltip)
-Vue.use(Loading, { skin: 'pc' })
-Vue.use(Badge)
-Vue.use(Message)
-Vue.use(Ztree)
-Vue.use(DatePicker)
-Vue.use(Download)
-// Vue.component(Button.name, Button)
-// Vue.component(DatePicker.name, DatePicker)
+// import 'vx-easyui/dist/themes/default/easyui.css'
+// import 'vx-easyui/dist/themes/icon.css'
+// import 'vx-easyui/dist/themes/vue.css'
+// import EasyUI from 'vx-easyui'
+
+// Vue.use(EasyUI)
+
+// Vue.use(Tooltip)
+// Vue.use(Loading, { skin: 'pc' })
+// Vue.use(Badge)
+// Vue.use(Message)
+// Vue.use(Ztree)
+// Vue.use(DatePicker)
+// Vue.use(Download)
 
 Vue.config.productionTip = false
 
