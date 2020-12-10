@@ -209,6 +209,16 @@ export default new Router({
       path: '/button',
       name: 'page-button',
       component: res => require(['@/views/page-button.vue'], res)
+    },
+    {
+      path: '/wordcloud',
+      name: 'page-wordcloud',
+      component: res => require(['@/views/wordcloud.vue'], res)
+    },
+    {
+      path: '/bubble',
+      name: 'page-bubble',
+      component: res => require(['@/views/bubble.vue'], res)
     }
   ]
 })
